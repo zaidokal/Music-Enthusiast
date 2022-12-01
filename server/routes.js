@@ -210,6 +210,37 @@ router.get('/lists', async (req, res) => {
 // ----- Unauthorized Users ----- api/open
 // GET Request for track search results
     // soft-matched
+
+router.get('/tracks', (req, res) => {
+    const { trackTitle, artist, genreName } = req.query;
+
+    let results = [...parseResults.tracks];
+    let n = 15
+
+    if (trackTitle){
+        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
+    }
+
+    if (artist){
+        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()));
+    }
+
+    // need to fix this still
+    if (genreName){
+        results = results.filter(track => {
+            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
+        });
+    }
+
+
+    results = results.slice(0 , n);
+
+    res.send(results.map((data) => {
+        return {
+            'track_id':data.track_id,
+        }
+    }));
+});
 // GET Request for specific track
     // include youtube button stuff
 // GET Request for 10 random public playlists
