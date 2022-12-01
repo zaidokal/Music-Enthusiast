@@ -80,7 +80,7 @@ router.get('/artists', (req, res) => {
 // GET Request for track search results
     // soft-matched
 
-router.get('/tracks', (req, res) => {
+router.get('/open/tracks', (req, res) => {
     const { trackTitle, artist, genreName } = req.query;
 
     let results = [...parseResults.tracks];
@@ -113,7 +113,7 @@ router.get('/tracks', (req, res) => {
 
 // GET Request for specific track
     // include youtube button stuff
-router.get('/tracks/:id', (req, res) => {
+router.get('/open/tracks/:id', (req, res) => {
     if (!isNaN(req.params.id)){
         res.send(parseResults.tracks
             .filter(track => track.track_id == req.params.id)
@@ -137,7 +137,7 @@ router.get('/tracks/:id', (req, res) => {
 });
 
 // GET Request for 10 random public playlists
-router.get('/lists', async (req, res) => {
+router.get('/open/lists', async (req, res) => {
 
     let results = [];
 
@@ -172,7 +172,7 @@ router.get('/lists', async (req, res) => {
 });
 
 // GET Request for specific list
-router.get('/lists/:name', async (req, res) => {
+router.get('/open/lists/:name', async (req, res) => {
     let existingList = await storage.getItem(req.params.name);
     if (!existingList){
         res.send("ERROR: no existing list with this name");
@@ -184,7 +184,7 @@ router.get('/lists/:name', async (req, res) => {
 
 // ----- Authenticated Users ----- api/secure
 // POST Request to create playlist
-router.post('/lists', body('listName').not().isEmpty().trim().escape(), async (req, res) => {
+router.post('/secure/lists', body('listName').not().isEmpty().trim().escape(), async (req, res) => {
     let existingList = await storage.getItem(req.body.listName);
     if (existingList){
         res.send("ERROR: existing list with this name");
@@ -196,7 +196,7 @@ router.post('/lists', body('listName').not().isEmpty().trim().escape(), async (r
 });
 
 // PUT Request to edit playlist
-router.put('/lists/:name', body('listName').not().isEmpty(), body('tracks').not().isEmpty(), async (req, res) => {
+router.put('/secure/lists/:name', body('listName').not().isEmpty(), body('tracks').not().isEmpty(), async (req, res) => {
     let existingList = await storage.getItem(req.params.name);
     if (!existingList){
         res.send("ERROR: no existing list with this name");
@@ -210,7 +210,7 @@ router.put('/lists/:name', body('listName').not().isEmpty(), body('tracks').not(
 });
 
 // DELETE Request to delete playlist
-router.delete('/lists/:name', async (req, res) => {
+router.delete('/secure/lists/:name', async (req, res) => {
     let existingList = await storage.getItem(req.params.name);
     if (!existingList){
         res.send("ERROR: no existing list with this name");
