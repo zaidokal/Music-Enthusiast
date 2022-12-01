@@ -165,7 +165,7 @@ router.get('/tracks/:id', (req, res) => {
                 'track_genres':data.track_genres, 
                 'track_number':data.track_number, 
                 'track_title':data.track_title,
-                'youtube_query':`https://www.youtube.com/results?search_query=${data.track_title}`
+                'youtube_query':`https://www.youtube.com/results?search_query=${data.artist_name} ${data.track_title}`
             }
         }));
     }
