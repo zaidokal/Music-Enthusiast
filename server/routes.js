@@ -190,7 +190,11 @@ router.post('/secure/lists', body('listName').not().isEmpty().trim().escape(), a
         res.send("ERROR: existing list with this name");
     }
     else if (!existingList) {
-        storage.setItem(req.body.listName, 1);
+        storage.setItem(req.body.listName, {
+            creator: req.body.userName,
+            tracks: req.body.tracks,
+            privateFlag: "private",
+        });
         res.send("Successfully added list!")
     }
 });
@@ -203,7 +207,9 @@ router.put('/secure/lists/:name', body('listName').not().isEmpty(), body('tracks
     }
     else if (existingList) {
         storage.setItem(req.params.name, {
+            creator: req.body.userName,
             tracks: req.body.tracks,
+            privateFlag: req.body.privateFlag
         });
         res.send("Successfully updated tracks in list!")
     }
