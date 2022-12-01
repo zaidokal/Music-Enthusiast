@@ -200,4 +200,33 @@ router.get('/lists', async (req, res) => {
 
 });
 
+// ----- Authentication ----- api/auth ?
+// POST request to login
+    // Some sort of request for JWT
+// POST reqeust to create account
+    // Verification
+// PUT request to change password
+
+// ----- Unauthorized Users ----- api/open
+// GET Request for track search results
+    // soft-matched
+// GET Request for specific track
+    // include youtube button stuff
+// GET Request for 10 random public playlists
+// GET Request for specific list
+
+// ----- Authenticated Users ----- api/secure
+// POST Request to create playlist
+// PUT Request to edit playlist
+// DELETE Request to delete playlist
+// POST Request to create review
+// PUT Request to edit a review
+// DELETE Request to delete a review
+
+// ----- Admin ----- api/admin
+// PUT to modify site manager priveleges
+// PUT to modify deactivated status
+// PUT to modify review hidden status
+// POST to create policies
+// PUT to modify policies
 module.exports = router;
