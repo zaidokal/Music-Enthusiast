@@ -237,6 +237,7 @@ router.post('/secure/reviews', body('reviewName').not().isEmpty().trim().escape(
     }
     else if (!existingReview) {
         storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
             rating: req.body.rating,
             comment: req.body.comment,
             hidden: false,
@@ -254,6 +255,7 @@ router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (r
     }
     else if (existingReview) {
         storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
             rating: req.body.rating,
             comment: req.body.comment,
             hidden: false,
