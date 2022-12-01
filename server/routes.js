@@ -52,53 +52,6 @@ router.get('/artists/:id', (req, res) => {
     }
 });
 
-// Get the following details for a given track ID: album_id, album_title, artist_id, artist_name, tags, track_date_created, track_date_recorded, track_duration, track_genres, track_number, track_title
-router.get('/tracks/:id', (req, res) => {
-    if (!isNaN(req.params.id)){
-        res.send(parseResults.tracks
-            .filter(track => track.track_id == req.params.id)
-            .map((data) => {
-            return {
-                'album_id':data.album_id, 
-                'album_title':data.album_title, 
-                'artist_id':data.artist_id, 
-                'artist_name':data.artist_name, 
-                'tags':data.tags, 
-                'track_date_created':data.track_date_created, 
-                'track_date_recorded':data.track_date_recorded, 
-                'track_duration':data.track_duration, 
-                'track_genres':data.track_genres, 
-                'track_number':data.track_number, 
-                'track_title':data.track_title,
-            }
-        }));
-    }
-});
-
-// Get the first n number of matching track IDs for a given search pattern matching the track title or album. If the number of matches is less than n, then return all matches. Please feel free to pick a suitable value for n.]
-router.get('/tracks', (req, res) => {
-    const { trackTitle, albumTitle } = req.query;
-
-    let results = [...parseResults.tracks];
-    let n = 15
-
-    if (trackTitle){
-        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
-    }
-
-    if (albumTitle){
-        results = results.filter(track => track.album_title.toLowerCase().includes(albumTitle.toLowerCase()));
-    }
-
-    results = results.slice(0 , n);
-
-    res.send(results.map((data) => {
-        return {
-            'track_id':data.track_id,
-        }
-    }));
-});
-
 // Get all the matching artist IDs for a given search pattern matching the artist's name.
 router.get('/artists', (req, res) => {
     const { artistName } = req.query;
@@ -116,57 +69,75 @@ router.get('/artists', (req, res) => {
     }));
 });
 
-// Create a new list to save a list of tracks with a given list name. Return an error if name exists.
-router.post('/lists', body('listName').not().isEmpty().trim().escape(), async (req, res) => {
-    let existingList = await storage.getItem(req.body.listName);
-    if (existingList){
-        res.send("ERROR: existing list with this name");
-    }
-    else if (!existingList) {
-        storage.setItem(req.body.listName, 1);
-        res.send("Successfully added list!")
-    }
-});
+// ----- Authentication ----- api/auth ? -
+// POST request to login
+    // Some sort of request for JWT
+// POST reqeust to create account
+    // Verification
+// PUT request to change password
 
-// Save a list of track IDs to a given list name. Return an error if the list name does not exist. Replace existing track IDs with new values if the list exists.
-router.put('/lists/:name', body('listName').not().isEmpty(), body('tracks').not().isEmpty(), async (req, res) => {
-    let existingList = await storage.getItem(req.params.name);
-    if (!existingList){
-        res.send("ERROR: no existing list with this name");
+// ----- Unauthorized Users ----- api/open
+// GET Request for track search results
+    // soft-matched
+
+router.get('/open/tracks', (req, res) => {
+    const { trackTitle, artist, genreName } = req.query;
+
+    let results = [...parseResults.tracks];
+    let n = 15
+
+    if (trackTitle){
+        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
     }
-    else if (existingList) {
-        storage.setItem(req.params.name, {
-            tracks: req.body.tracks,
+
+    if (artist){
+        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()));
+    }
+
+    // need to fix this still
+    if (genreName){
+        results = results.filter(track => {
+            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
         });
-        res.send("Successfully updated tracks in list!")
+    }
+
+
+    results = results.slice(0 , n);
+
+    res.send(results.map((data) => {
+        return {
+            'track_id':data.track_id,
+        }
+    }));
+});
+
+// GET Request for specific track
+    // include youtube button stuff
+router.get('/open/tracks/:id', (req, res) => {
+    if (!isNaN(req.params.id)){
+        res.send(parseResults.tracks
+            .filter(track => track.track_id == req.params.id)
+            .map((data) => {
+            return {
+                'album_id':data.album_id, 
+                'album_title':data.album_title, 
+                'artist_id':data.artist_id, 
+                'artist_name':data.artist_name, 
+                'tags':data.tags, 
+                'track_date_created':data.track_date_created, 
+                'track_date_recorded':data.track_date_recorded, 
+                'track_duration':data.track_duration, 
+                'track_genres':data.track_genres, 
+                'track_number':data.track_number, 
+                'track_title':data.track_title,
+                'youtube_query':`https://www.youtube.com/results?search_query=${data.artist_name} ${data.track_title}`
+            }
+        }));
     }
 });
 
-// Get the list of track IDs for a given list.
-router.get('/lists/:name', async (req, res) => {
-    let existingList = await storage.getItem(req.params.name);
-    if (!existingList){
-        res.send("ERROR: no existing list with this name");
-    }
-    else if (existingList) {
-        res.send(await storage.valuesWithKeyMatch(req.params.name));
-    }
-});
-
-// Delete a list of tracks with a given name. Return an error if the given list doesn’t exist.
-router.delete('/lists/:name', async (req, res) => {
-    let existingList = await storage.getItem(req.params.name);
-    if (!existingList){
-        res.send("ERROR: no existing list with this name");
-    }
-    else if (existingList) {
-        storage.removeItem(req.params.name);
-        res.send("Successfully deleted the list!")
-    }
-})
-
-// Get a list of list names, number of tracks that are saved in each list and the total play time of each list.
-router.get('/lists', async (req, res) => {
+// GET Request for 10 random public playlists
+router.get('/open/lists', async (req, res) => {
 
     let results = [];
 
@@ -200,56 +171,62 @@ router.get('/lists', async (req, res) => {
 
 });
 
-// ----- Authentication ----- api/auth ? -
-// POST request to login
-    // Some sort of request for JWT
-// POST reqeust to create account
-    // Verification
-// PUT request to change password
-
-// ----- Unauthorized Users ----- api/open
-// GET Request for track search results
-    // soft-matched
-
-router.get('/tracks', (req, res) => {
-    const { trackTitle, artist, genreName } = req.query;
-
-    let results = [...parseResults.tracks];
-    let n = 15
-
-    if (trackTitle){
-        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
-    }
-
-    if (artist){
-        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()));
-    }
-
-    // need to fix this still
-    if (genreName){
-        results = results.filter(track => {
-            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
-        });
-    }
-
-
-    results = results.slice(0 , n);
-
-    res.send(results.map((data) => {
-        return {
-            'track_id':data.track_id,
-        }
-    }));
-});
-// GET Request for specific track
-    // include youtube button stuff
-// GET Request for 10 random public playlists
 // GET Request for specific list
+router.get('/open/lists/:name', async (req, res) => {
+    let existingList = await storage.getItem(req.params.name);
+    if (!existingList){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingList) {
+        res.send(await storage.valuesWithKeyMatch(req.params.name));
+    }
+});
 
 // ----- Authenticated Users ----- api/secure
 // POST Request to create playlist
+router.post('/secure/lists', body('listName').not().isEmpty().trim().escape(), async (req, res) => {
+    let existingList = await storage.getItem(req.body.listName);
+    if (existingList){
+        res.send("ERROR: existing list with this name");
+    }
+    else if (!existingList) {
+        storage.setItem(req.body.listName, {
+            creator: req.body.userName,
+            tracks: req.body.tracks,
+            privateFlag: "private",
+        });
+        res.send("Successfully added list!")
+    }
+});
+
 // PUT Request to edit playlist
+router.put('/secure/lists/:name', body('listName').not().isEmpty(), body('tracks').not().isEmpty(), async (req, res) => {
+    let existingList = await storage.getItem(req.params.name);
+    if (!existingList){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingList) {
+        storage.setItem(req.params.name, {
+            creator: req.body.userName,
+            tracks: req.body.tracks,
+            privateFlag: req.body.privateFlag
+        });
+        res.send("Successfully updated tracks in list!")
+    }
+});
+
 // DELETE Request to delete playlist
+router.delete('/secure/lists/:name', async (req, res) => {
+    let existingList = await storage.getItem(req.params.name);
+    if (!existingList){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingList) {
+        storage.removeItem(req.params.name);
+        res.send("Successfully deleted the list!")
+    }
+})
+
 // POST Request to create review
 // PUT Request to edit a review
 // DELETE Request to delete a review
