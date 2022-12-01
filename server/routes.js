@@ -230,8 +230,50 @@ router.delete('/secure/lists/:name', async (req, res) => {
 })
 
 // POST Request to create review
+router.post('/secure/reviews', body('reviewName').not().isEmpty().trim().escape(), async (req, res) => {
+    let existingReview = await storage.getItem(req.body.reviewName);
+    if (existingReview){
+        res.send("ERROR: existing review with this name");
+    }
+    else if (!existingReview) {
+        storage.setItem(req.body.reviewName, {
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: false,
+            type: "review",
+        });
+        res.send("Successfully added review!")
+    }
+});
+
 // PUT Request to edit a review
+router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingReview) {
+        storage.setItem(req.body.reviewName, {
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: false,
+            type: "review",
+        });
+        res.send("Successfully added review!")
+    }
+});
+
 // DELETE Request to delete a review
+router.delete('/secure/reviews/:name', async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing review with this name");
+    }
+    else if (existingReview) {
+        storage.removeItem(req.params.name);
+        res.send("Successfully deleted the review!")
+    }
+})
 
 // ----- Admin ----- api/admin
 // PUT to modify site manager priveleges
