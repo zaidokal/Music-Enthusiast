@@ -194,6 +194,7 @@ router.post('/secure/lists', body('listName').not().isEmpty().trim().escape(), a
             creator: req.body.userName,
             tracks: req.body.tracks,
             privateFlag: "private",
+            type: "list",
         });
         res.send("Successfully added list!")
     }
@@ -209,7 +210,8 @@ router.put('/secure/lists/:name', body('listName').not().isEmpty(), body('tracks
         storage.setItem(req.params.name, {
             creator: req.body.userName,
             tracks: req.body.tracks,
-            privateFlag: req.body.privateFlag
+            privateFlag: req.body.privateFlag,
+            type: "list",
         });
         res.send("Successfully updated tracks in list!")
     }
@@ -228,8 +230,52 @@ router.delete('/secure/lists/:name', async (req, res) => {
 })
 
 // POST Request to create review
+router.post('/secure/reviews', body('reviewName').not().isEmpty().trim().escape(), async (req, res) => {
+    let existingReview = await storage.getItem(req.body.reviewName);
+    if (existingReview){
+        res.send("ERROR: existing review with this name");
+    }
+    else if (!existingReview) {
+        storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: false,
+            type: "review",
+        });
+        res.send("Successfully added review!")
+    }
+});
+
 // PUT Request to edit a review
+router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingReview) {
+        storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: false,
+            type: "review",
+        });
+        res.send("Successfully added review!")
+    }
+});
+
 // DELETE Request to delete a review
+router.delete('/secure/reviews/:name', async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing review with this name");
+    }
+    else if (existingReview) {
+        storage.removeItem(req.params.name);
+        res.send("Successfully deleted the review!")
+    }
+})
 
 // ----- Admin ----- api/admin
 // PUT to modify site manager priveleges
