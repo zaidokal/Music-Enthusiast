@@ -69,41 +69,6 @@ router.get('/artists', (req, res) => {
     }));
 });
 
-// Get a list of list names, number of tracks that are saved in each list and the total play time of each list.
-router.get('/lists', async (req, res) => {
-
-    let results = [];
-
-    try {
-        await storage.forEach(async function (datum) {
-            let totalPlaytime = 0;
-
-                tracks = datum.value.tracks;
-                for (trackid of tracks) {
-                    let duration = parseResults.tracks.filter(trck => trck.track_id == trackid)[0];
-                    if (duration) {
-                        duration = duration.track_duration
-                        let timeSplit = duration.split(':');
-                        totalPlaytime += parseInt(timeSplit[0]) * 60 + parseInt(timeSplit[1]);
-                    }
-                }
-
-                convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
-
-                results.push({
-                    listName:datum.key,
-                    tracks:datum.value.tracks,
-                    playtime:convertedPlaytime
-                });
-        });
-    } catch (err) {
-        console.log(err);
-    }
-
-    res.send(results);
-
-});
-
 // ----- Authentication ----- api/auth ? -
 // POST request to login
     // Some sort of request for JWT
@@ -170,7 +135,42 @@ router.get('/tracks/:id', (req, res) => {
         }));
     }
 });
+
 // GET Request for 10 random public playlists
+router.get('/lists', async (req, res) => {
+
+    let results = [];
+
+    try {
+        await storage.forEach(async function (datum) {
+            let totalPlaytime = 0;
+
+                tracks = datum.value.tracks;
+                for (trackid of tracks) {
+                    let duration = parseResults.tracks.filter(trck => trck.track_id == trackid)[0];
+                    if (duration) {
+                        duration = duration.track_duration
+                        let timeSplit = duration.split(':');
+                        totalPlaytime += parseInt(timeSplit[0]) * 60 + parseInt(timeSplit[1]);
+                    }
+                }
+
+                convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
+
+                results.push({
+                    listName:datum.key,
+                    tracks:datum.value.tracks,
+                    playtime:convertedPlaytime
+                });
+        });
+    } catch (err) {
+        console.log(err);
+    }
+
+    res.send(results);
+
+});
+
 // GET Request for specific list
 router.get('/lists/:name', async (req, res) => {
     let existingList = await storage.getItem(req.params.name);
