@@ -194,6 +194,7 @@ router.post('/secure/lists', body('listName').not().isEmpty().trim().escape(), a
             creator: req.body.userName,
             tracks: req.body.tracks,
             privateFlag: "private",
+            type: "list",
         });
         res.send("Successfully added list!")
     }
@@ -209,7 +210,8 @@ router.put('/secure/lists/:name', body('listName').not().isEmpty(), body('tracks
         storage.setItem(req.params.name, {
             creator: req.body.userName,
             tracks: req.body.tracks,
-            privateFlag: req.body.privateFlag
+            privateFlag: req.body.privateFlag,
+            type: "list",
         });
         res.send("Successfully updated tracks in list!")
     }
