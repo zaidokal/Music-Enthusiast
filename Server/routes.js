@@ -200,7 +200,7 @@ router.get('/lists', async (req, res) => {
 
 });
 
-// ----- Authentication ----- api/auth ?
+// ----- Authentication ----- api/auth ? -
 // POST request to login
     // Some sort of request for JWT
 // POST reqeust to create account
