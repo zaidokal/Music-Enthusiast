@@ -97,10 +97,11 @@ router.get('/open/tracks', (req, res) => {
     // need to fix this still
     if (genreName){
         results = results.filter(track => {
-            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
+            if (String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true){
+                return true;
+            }
         });
     }
-
 
     results = results.slice(0 , n);
 
@@ -143,7 +144,8 @@ router.get('/open/lists', async (req, res) => {
 
     try {
         await storage.forEach(async function (datum) {
-            let totalPlaytime = 0;
+            if ((datum.value.type === "list") && (datum.value.privateFlag === "public")) {
+                let totalPlaytime = 0;
 
                 tracks = datum.value.tracks;
                 for (trackid of tracks) {
@@ -157,17 +159,25 @@ router.get('/open/lists', async (req, res) => {
 
                 convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
 
+                // need to add average ratings also
+
                 results.push({
                     listName:datum.key,
+                    creator: datum.value.creator,
                     tracks:datum.value.tracks,
                     playtime:convertedPlaytime
                 });
+            }
+            else {
+                console.log("Error in getting lists");
+            }
         });
     } catch (err) {
         console.log(err);
     }
 
-    res.send(results);
+    // sending back only the first 10 results
+    res.send(results.slice(0,10));
 
 });
 
