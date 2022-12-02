@@ -4,6 +4,7 @@ const { body } = require("express-validator");
 const parser = require("./parser");
 const stringSimilarity = require("string-similarity");
 const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 // Initialize database.
 const storage = require("node-persist");
@@ -13,6 +14,12 @@ storage.init({
   parse: JSON.parse,
   encoding: "utf8",
 });
+
+const initializePassport = require("./passport-config");
+const { appendFile } = require("fs");
+initializePassport(passport, (email) =>
+  storage.valuesWithKeyMatch(async (e) => (await storage.getItem(e)) === email)
+);
 
 // Get the parsed arrays.
 const parseResults = parser();
@@ -105,6 +112,15 @@ router.post("/auth/accounts", async (req, res) => {
 
 // Verification
 // POST request to login
+router.post(
+  "/auth/login",
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/auth/login",
+    failureFlash: true,
+  })
+);
+
 // Some sort of request for JWT
 // PUT request to change password
 
