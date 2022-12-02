@@ -98,7 +98,7 @@ router.get('/open/tracks', (req, res) => {
     // need to fix this still
     if (genreName){
         results = results.filter(track => {
-            if ((String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true) || (stringSimilarity.compareTwoStrings((String(track.track_genres).toLowerCase(), genreName.toLowerCase()) > 0.8))) {
+            if (String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true) {
                 return true;
             }
         });
@@ -132,7 +132,7 @@ router.get('/open/tracks/:id', (req, res) => {
                 'track_genres':data.track_genres, 
                 'track_number':data.track_number, 
                 'track_title':data.track_title,
-                'youtube_query':`https://www.youtube.com/results?search_query=${data.artist_name} ${data.track_title}`
+                'youtube_query':`https://www.youtube.com/results?search_query=${data.artist_name}%20${data.track_title}`
             }
         }));
     }
@@ -160,7 +160,10 @@ router.get('/open/lists', async (req, res) => {
 
                 convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
 
-                let totalRating, numOfRatings = 0;
+                console.log("got to here!");
+
+                let totalRating = 0; 
+                let numOfRatings = 0;
                 await storage.forEach(async function (datum2) {
                     if ((datum2.value.type === "review") && (datum2.value.list === datum.key)){
                         totalRating += datum2.value.rating;
@@ -172,10 +175,10 @@ router.get('/open/lists', async (req, res) => {
 
                 results.push({
                     listName:datum.key,
-                    creator: datum.value.creator,
+                    creator:datum.value.creator,
                     tracks:datum.value.tracks,
                     playtime:convertedPlaytime,
-                    average_rating: avgRating
+                    average_rating:avgRating
                 });
             }
             else {
@@ -274,7 +277,7 @@ router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (r
         res.send("ERROR: no existing review with this name");
     }
     else if (existingReview) {
-        storage.setItem(req.body.reviewName, {
+        storage.setItem(req.params.name, {
             list: req.body.listName,
             rating: req.body.rating,
             comment: req.body.comment,
