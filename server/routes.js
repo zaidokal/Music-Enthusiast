@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const parser = require('./parser');
+const stringSimilarity = require('string-similarity');
 
 // Initialize database.
 const storage = require('node-persist');
@@ -87,20 +88,21 @@ router.get('/open/tracks', (req, res) => {
     let n = 15
 
     if (trackTitle){
-        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
+        results = results.filter(track => (track.track_title.toLowerCase().includes(trackTitle.toLowerCase())) || (stringSimilarity.compareTwoStrings(track.track_title.toLowerCase(), trackTitle.toLowerCase()) > 0.8));
     }
 
     if (artist){
-        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()));
+        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()) || (stringSimilarity.compareTwoStrings(track.artist_name.toLowerCase(), artist.toLowerCase()) > 0.8));
     }
 
     // need to fix this still
     if (genreName){
         results = results.filter(track => {
-            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
+            if ((String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true) || (stringSimilarity.compareTwoStrings((String(track.track_genres).toLowerCase(), genreName.toLowerCase()) > 0.8))) {
+                return true;
+            }
         });
     }
-
 
     results = results.slice(0 , n);
 
@@ -143,7 +145,8 @@ router.get('/open/lists', async (req, res) => {
 
     try {
         await storage.forEach(async function (datum) {
-            let totalPlaytime = 0;
+            if ((datum.value.type === "list") && (datum.value.privateFlag === "public")) {
+                let totalPlaytime = 0;
 
                 tracks = datum.value.tracks;
                 for (trackid of tracks) {
@@ -157,17 +160,34 @@ router.get('/open/lists', async (req, res) => {
 
                 convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
 
+                let totalRating, numOfRatings = 0;
+                await storage.forEach(async function (datum2) {
+                    if ((datum2.value.type === "review") && (datum2.value.list === datum.key)){
+                        totalRating += datum2.value.rating;
+                        numOfRatings++;
+                    }
+                });
+
+                let avgRating = totalRating/numOfRatings;
+
                 results.push({
                     listName:datum.key,
+                    creator: datum.value.creator,
                     tracks:datum.value.tracks,
-                    playtime:convertedPlaytime
+                    playtime:convertedPlaytime,
+                    average_rating: avgRating
                 });
+            }
+            else {
+                console.log("Error in getting lists");
+            }
         });
     } catch (err) {
         console.log(err);
     }
 
-    res.send(results);
+    // sending back only the first 10 results
+    res.send(results.slice(0,10));
 
 });
 
@@ -251,7 +271,7 @@ router.post('/secure/reviews', body('reviewName').not().isEmpty().trim().escape(
 router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
     let existingReview = await storage.getItem(req.params.name);
     if (!existingReview){
-        res.send("ERROR: no existing list with this name");
+        res.send("ERROR: no existing review with this name");
     }
     else if (existingReview) {
         storage.setItem(req.body.reviewName, {
@@ -281,6 +301,40 @@ router.delete('/secure/reviews/:name', async (req, res) => {
 // PUT to modify site manager priveleges
 // PUT to modify deactivated status
 // PUT to modify review hidden status
-// POST to create policies
-// PUT to modify policies
+router.put('/admin/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing review with this name");
+    }
+    else if (existingReview) {
+        storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: true,
+            type: "review",
+        });
+        res.send("Successfully hid review!")
+    }
+});
+
+// GET to get policies
+router.get('/admin/policies', async (req, res) => {
+    let existingPolicies = await storage.getItem('policies');
+    if (!existingPolicies){
+        res.send("ERROR: policies not yet created");
+    }
+    else if (existingPolicies) {
+        res.send(await storage.valuesWithKeyMatch('policies'));
+    }
+});
+
+// PUT to create/modify policies
+router.put('/admin/policies', async (req, res) => {
+    storage.setItem('policies', {
+        privacy: req.body.privacy,
+        dmca: req.body.dmca,
+        aup: req.body.aup,
+    })  
+})
 module.exports = router;
