@@ -271,7 +271,7 @@ router.post('/secure/reviews', body('reviewName').not().isEmpty().trim().escape(
 router.put('/secure/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
     let existingReview = await storage.getItem(req.params.name);
     if (!existingReview){
-        res.send("ERROR: no existing list with this name");
+        res.send("ERROR: no existing review with this name");
     }
     else if (existingReview) {
         storage.setItem(req.body.reviewName, {
@@ -304,7 +304,7 @@ router.delete('/secure/reviews/:name', async (req, res) => {
 router.put('/admin/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
     let existingReview = await storage.getItem(req.params.name);
     if (!existingReview){
-        res.send("ERROR: no existing list with this name");
+        res.send("ERROR: no existing review with this name");
     }
     else if (existingReview) {
         storage.setItem(req.body.reviewName, {
@@ -314,7 +314,7 @@ router.put('/admin/reviews/:name', body('reviewName').not().isEmpty(), async (re
             hidden: true,
             type: "review",
         });
-        res.send("Successfully added review!")
+        res.send("Successfully hid review!")
     }
 });
 
