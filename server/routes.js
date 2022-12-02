@@ -301,6 +301,23 @@ router.delete('/secure/reviews/:name', async (req, res) => {
 // PUT to modify site manager priveleges
 // PUT to modify deactivated status
 // PUT to modify review hidden status
+router.put('/admin/reviews/:name', body('reviewName').not().isEmpty(), async (req, res) => {
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview){
+        res.send("ERROR: no existing list with this name");
+    }
+    else if (existingReview) {
+        storage.setItem(req.body.reviewName, {
+            list: req.body.listName,
+            rating: req.body.rating,
+            comment: req.body.comment,
+            hidden: true,
+            type: "review",
+        });
+        res.send("Successfully added review!")
+    }
+});
+
 // GET to get policies
 router.get('/admin/policies', async (req, res) => {
     let existingPolicies = await storage.getItem('policies');
