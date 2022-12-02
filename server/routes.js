@@ -3,6 +3,7 @@ const router = express.Router();
 const { body } = require("express-validator");
 const parser = require("./parser");
 const stringSimilarity = require("string-similarity");
+const bcrypt = require("bcrypt");
 
 // Initialize database.
 const storage = require("node-persist");
@@ -83,16 +84,23 @@ router.get("/artists", (req, res) => {
 router.post("/auth/accounts", async (req, res) => {
   let existingEmail = await storage.getItem(req.body.email);
 
-  if (existingEmail) {
-    res.send("ERROR: An account with this email already exists");
-  } else {
-    storage.setItem(req.body.email, {
-      username: req.body.userName,
-      password: req.body.password,
-    });
-  }
+  try {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
-  res.send("Successfully created account.");
+    if (existingEmail) {
+      res.send("ERROR: An account with this email already exists");
+    } else {
+      storage.setItem(req.body.email, {
+        username: req.body.userName,
+        password: hashedPassword,
+      });
+
+      res.send("Successfully created account.");
+    }
+  } catch {
+    res.status(500).send();
+  }
 });
 
 // Verification
