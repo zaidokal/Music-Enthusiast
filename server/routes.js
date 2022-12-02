@@ -302,6 +302,22 @@ router.delete('/secure/reviews/:name', async (req, res) => {
 // PUT to modify deactivated status
 // PUT to modify review hidden status
 // GET to get policies
-// POST to create policies
-// PUT to modify policies
+router.get('/admin/policies', async (req, res) => {
+    let existingPolicies = await storage.getItem('policies');
+    if (!existingPolicies){
+        res.send("ERROR: policies not yet created");
+    }
+    else if (existingPolicies) {
+        res.send(await storage.valuesWithKeyMatch('policies'));
+    }
+});
+
+// PUT to create/modify policies
+router.put('/admin/policies', async (req, res) => {
+    storage.setItem('policies', {
+        privacy: req.body.privacy,
+        dmca: req.body.dmca,
+        aup: req.body.aup,
+    })  
+})
 module.exports = router;
