@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import GenericButton from "./components/GenericButton";
 
 export const Register = (props) => {
   const [email, setEmail] = useState("");
@@ -42,9 +43,14 @@ export const Register = (props) => {
         <button type="submit">Log In</button>
       </form>
 
-      <button onClick={() => props.onFormSwitch("login")}>
+      <GenericButton
+        linkTo={"/login"}
+        text={"Don't have an account? Register here."}
+      />
+
+      {/* <button onClick={() => props.onFormSwitch("login")}>
         Already have an account? Login here.
-      </button>
+      </button> */}
     </>
   );
 };
