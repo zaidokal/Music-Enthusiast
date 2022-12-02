@@ -97,10 +97,11 @@ router.get('/open/tracks', (req, res) => {
     // need to fix this still
     if (genreName){
         results = results.filter(track => {
-            track.track_genres.contains(toLowerCase().includes(genreName.toLowerCase()))
+            if (String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true){
+                return true;
+            }
         });
     }
-
 
     results = results.slice(0 , n);
 
@@ -159,7 +160,7 @@ router.get('/open/lists', async (req, res) => {
                 convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
 
                 // need to add average ratings also
-                
+
                 results.push({
                     listName:datum.key,
                     creator: datum.value.creator,
