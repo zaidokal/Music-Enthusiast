@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const parser = require('./parser');
+const stringSimilarity = require('string-similarity');
 
 // Initialize database.
 const storage = require('node-persist');
@@ -87,17 +88,17 @@ router.get('/open/tracks', (req, res) => {
     let n = 15
 
     if (trackTitle){
-        results = results.filter(track => track.track_title.toLowerCase().includes(trackTitle.toLowerCase()));
+        results = results.filter(track => (track.track_title.toLowerCase().includes(trackTitle.toLowerCase())) || (stringSimilarity.compareTwoStrings(track.track_title.toLowerCase(), trackTitle.toLowerCase()) > 0.8));
     }
 
     if (artist){
-        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()));
+        results = results.filter(track => track.artist_name.toLowerCase().includes(artist.toLowerCase()) || (stringSimilarity.compareTwoStrings(track.artist_name.toLowerCase(), artist.toLowerCase()) > 0.8));
     }
 
     // need to fix this still
     if (genreName){
         results = results.filter(track => {
-            if (String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true){
+            if ((String(track.track_genres).toLowerCase().includes(genreName.toLowerCase()) == true) || (stringSimilarity.compareTwoStrings((String(track.track_genres).toLowerCase(), genreName.toLowerCase()) > 0.8))) {
                 return true;
             }
         });
@@ -300,6 +301,7 @@ router.delete('/secure/reviews/:name', async (req, res) => {
 // PUT to modify site manager priveleges
 // PUT to modify deactivated status
 // PUT to modify review hidden status
+// GET to get policies
 // POST to create policies
 // PUT to modify policies
 module.exports = router;
