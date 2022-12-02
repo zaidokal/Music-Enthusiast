@@ -159,13 +159,22 @@ router.get('/open/lists', async (req, res) => {
 
                 convertedPlaytime = Math.floor(totalPlaytime % 3600 / 60) + ":" + Math.floor(totalPlaytime % 3600 % 60);
 
-                // need to add average ratings also
+                let totalRating, numOfRatings = 0;
+                await storage.forEach(async function (datum2) {
+                    if ((datum2.value.type === "review") && (datum2.value.list === datum.key)){
+                        totalRating += datum2.value.rating;
+                        numOfRatings++;
+                    }
+                });
+
+                let avgRating = totalRating/numOfRatings;
 
                 results.push({
                     listName:datum.key,
                     creator: datum.value.creator,
                     tracks:datum.value.tracks,
-                    playtime:convertedPlaytime
+                    playtime:convertedPlaytime,
+                    average_rating: avgRating
                 });
             }
             else {
