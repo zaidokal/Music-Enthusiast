@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import GenericButton from "./components/GenericButton";
+import GenericButton from "../components/GenericButton";
 
 export const Login = (props) => {
   const [email, setEmail] = useState("");
