@@ -149,6 +149,15 @@ router.post("/auth/login", (req, res, next) => {
 // Some sort of request for JWT
 // PUT request to change password
 
+// POST request to logout
+router.post('/auth/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.send("Successfully logged out");
+    console.log(req.user);
+  });
+});
+
 // ----- Unauthorized Users ----- api/open
 // GET Request for track search results
 // soft-matched
