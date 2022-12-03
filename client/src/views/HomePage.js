@@ -22,12 +22,15 @@ const HomePage = () => {
           width: 600,
         }}
       >
-        <GenericButton
-          linkTo={"/SearchPage"}
-          text={"Start your listening experience"}
-        />
-        <div>
+        <div className={styles.Message}>
           <label htmlFor="Message">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
+        </div>
+
+        <div className={styles.SearchButton}>
+          <GenericButton
+            linkTo={"/SearchPage"}
+            text={"Start your listening experience"}
+          />
         </div>
 
         <div className={styles.LegalMessageDiv}>
