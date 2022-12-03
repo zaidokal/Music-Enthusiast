@@ -45,12 +45,8 @@ export const Register = (props) => {
 
       <GenericButton
         linkTo={"/login"}
-        text={"Don't have an account? Register here."}
+        text={"Already have an account? Login here."}
       />
-
-      {/* <button onClick={() => props.onFormSwitch("login")}>
-        Already have an account? Login here.
-      </button> */}
     </>
   );
 };
