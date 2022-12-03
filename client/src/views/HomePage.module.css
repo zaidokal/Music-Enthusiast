@@ -1,5 +1,23 @@
-/* body {
-  background-image: url("../BackgroundPicture.png");
+.LegalMessageDiv {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+body {
+  background-color: grey;
+  background-image: url("../Image.jpg");
   background-repeat: no-repeat;
-  font-size: 100in;
-} */
+  height: 100%;
+  /* background-position: center; */
+  background-size: cover;
+  opacity: 1;
+  color: white;
+}
+
+.container {
+  background-image: url(../Image.jpg);
+}

@@ -5,23 +5,37 @@ import { SearchPage } from "../views/SearchPage";
 import GenericButton from "../components/GenericButton";
 import "./HomePage.module.css";
 import Header from "../components/Header";
-// import { BackgroundPicture } from "../components/BackgroundPicture";
+import styles from "./HomePage.module.css";
 
 const HomePage = () => {
   return (
     <>
       <Header />
 
-      <GenericButton
-        linkTo={"/SearchPage"}
-        text={"Start your listening experience"}
-      />
-      <label htmlFor="LegalMessage">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
-      <label htmlFor="LegalMessage">
-        Copyright, Privacy, and Acceptable Use
-      </label>
+      <div
+        className={styles.BackgroundImage}
+        style={{
+          backgroundImage: `url(${Image})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          height: 600,
+          width: 600,
+        }}
+      >
+        <GenericButton
+          linkTo={"/SearchPage"}
+          text={"Start your listening experience"}
+        />
+        <div>
+          <label htmlFor="Message">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
+        </div>
 
-      {/* style={{ backgroundImage: `url(${BackgroundPicture})` }} */}
+        <div className={styles.LegalMessageDiv}>
+          <label className={styles.LegalMessage} htmlFor="LegalMessage">
+            Copyright, Privacy, and Acceptable Use
+          </label>
+        </div>
+      </div>
     </>
   );
 };

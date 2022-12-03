@@ -2,4 +2,9 @@
   background-color: transparent;
   color: white;
   position: relative;
+  font-size: 16px;
+  border-color: rgb(165, 208, 243);
+  border-radius: 30px;
+  width: 120px;
+  height: 45px;
 }

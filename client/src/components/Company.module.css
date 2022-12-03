@@ -1,0 +1,10 @@
+.Company {
+  align-items: center;
+  /* color: white; */
+  font-size: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 80px;
+  padding-left: 25px;
+  color: white;
+  background-color: transparent;
+}
