@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GenericButton from "../components/GenericButton";
+import Header from "../components/Header";
 
 export const SearchPage = (props) => {
   const handleSubmit = (e) => {
@@ -8,6 +9,8 @@ export const SearchPage = (props) => {
 
   return (
     <>
+      <Header />
+
       <label htmlFor="CompanyName">SRZ Music</label>
 
       <label htmlFor="Message">Find your next favourite song!</label>
