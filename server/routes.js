@@ -3,11 +3,9 @@ const router = express.Router();
 const { body } = require("express-validator");
 const parser = require("./parser");
 const stringSimilarity = require("string-similarity");
-const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const session = require("express-session");
-const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 
 // Initialize database.
@@ -20,69 +18,17 @@ storage.init({
 });
 
 router.use(
-    session({
-      secret: "secretcode",
-      resave: true,
-      saveUninitialized: false,
-    })
+  session({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: false,
+  })
 );
-  
+
 router.use(cookieParser("secretcode"));
 router.use(passport.initialize());
 router.use(passport.session());
-
-passport.use(
-    new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password'}, 
-        async (email, password, done) => {
-        let emails = await storage.keys();
-        if (emails.includes(email)) {
-            let user = await storage.getItem(email);
-
-            bcrypt.compare(password, user.password, (err, result) => {
-                if (err) throw err;
-                if (result === true) {
-                let userObj = {
-                    theEmail: email,
-                    username: user.username,
-                    password: user.password
-                }
-                return done(null, userObj);
-                } else {
-                return done(null, false);
-                }
-            });
-        } else {
-        return done(null, false);
-        }
-    })
-);
-
-passport.serializeUser(function(userObj, cb) {
-    process.nextTick(function() {
-      return cb(null, {
-        email: userObj.theEmail,
-        username: userObj.username,
-        password: userObj.password
-      });
-    });
-});
-  
-  passport.deserializeUser(function(userObj, cb) {
-    process.nextTick(function() {
-      return cb(null, userObj);
-    });
-});
-
-// passport.serializeUser((userObj, done) => {
-// done(null, userObj.theEmail);
-// });
-
-// passport.deserializeUser(async (theEmail, done) => {
-// let user = await storage.getItem(theEmail);
-// done(err, user);
-// });
+require("./passport-config")(passport, storage);
 
 // Get the parsed arrays.
 const parseResults = parser();
@@ -175,11 +121,30 @@ router.post("/auth/accounts", async (req, res) => {
 
 // Verification
 // POST request to login
-router.post('/auth/login', 
-passport.authenticate('local', { failureRedirect: '/api/genres', failureMessage: true }), 
-function(req, res) {
-    res.send("bruh");
+router.post("/auth/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) throw err;
+    if (!user) res.send("No User Exists");
+    else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send("Successfully Authenticated");
+        console.log(req.user);
+      });
+    }
+  })(req, res, next);
 });
+
+// router.post(
+//   "/auth/login",
+//   passport.authenticate("local", {
+//     failureRedirect: "/api/genres",
+//     failureMessage: true,
+//   }),
+//   function (req, res) {
+//     res.send("bruh");
+//   }
+// );
 
 // Some sort of request for JWT
 // PUT request to change password
