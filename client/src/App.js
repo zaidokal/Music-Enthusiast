@@ -5,7 +5,7 @@ import HomePage from "./views/HomePage";
 import { Login } from "./views/Login";
 import { Register } from "./views/Register";
 import { SearchPage } from "./views/SearchPage";
-import { Results } from "./views/Results";
+import { SearchResults } from "./views/SearchResults";
 
 const App = () => {
   return (
@@ -14,7 +14,7 @@ const App = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/SearchPage" element={<SearchPage />} />
-      {/* <Route path="/Results" element={<Results />} /> */}
+      <Route path="/SearchResults" element={<SearchResults />} />
     </Routes>
   );
 };
