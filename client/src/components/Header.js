@@ -19,7 +19,7 @@ const Header = (props) => {
           </Link>
         </div>
 
-        <div className={styles.AccountDiv}>
+        <div className={styles.AccountDiv1}>
           <Link>
             <div>
               <AccountButton
@@ -27,6 +27,12 @@ const Header = (props) => {
                 linkTo={"/login"}
                 text={"Login"}
               />
+            </div>
+          </Link>
+        </div>
+        <div className={styles.AccountDiv2}>
+          <Link>
+            <div>
               <AccountButton linkTo={"/register"} text={"Register"} />
             </div>
           </Link>
