@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./GenericButton.module.css";
+import styles from "./AccountButton.module.css";
 import { Link } from "react-router-dom";
 
-const GenericButton = (props) => {
+const AccountButton = (props) => {
   return (
     <div className={styles.container}>
       <Link to={props.linkTo}>
@@ -14,4 +14,4 @@ const GenericButton = (props) => {
   );
 };
 
-export default GenericButton;
+export default AccountButton;

@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import GenericButton from "../components/GenericButton";
 
 export const Login = (props) => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -17,20 +14,10 @@ export const Login = (props) => {
     <>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">email</label>
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          type="email"
-          placeholder="email@example.com"
-        />
+        <input type="email" placeholder="email@example.com" />
 
         <label htmlFor="password">password</label>
-        <input
-          value={pass}
-          onChange={(e) => setPass(e.target.value)}
-          type="password"
-          placeholder="********"
-        />
+        <input type="password" placeholder="********" />
 
         <GenericButton onClick={testSubmit} text={"Login"} linkTo={"/"} />
       </form>
