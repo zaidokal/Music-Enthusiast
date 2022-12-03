@@ -20,7 +20,7 @@ export const Login = (props) => {
       <div className={styles.MainDiv}>
         <form onSubmit={handleSubmit}>
           <EmailBox />
-          <PasswordBox />/
+          <PasswordBox />
           <div className={styles.AccountButton}>
             <AccountButton text={"Login"} linkTo={"/SearchPage"} />
           </div>
