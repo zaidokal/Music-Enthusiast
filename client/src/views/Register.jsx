@@ -4,6 +4,10 @@ import HeaderAccount from "../components/HeaderAccount";
 import styles from "./Register.module.css";
 import AccountButton from "../components/AccountButton";
 import ChangeButton from "../components/ChangeButton";
+import BackgroundOpacity from "../components/BackgroundOpacity";
+import EmailBox from "../components/EmailBox";
+import PasswordBox from "../components/PasswordBox";
+import NameBox from "../components/NameBox";
 
 export const Register = (props) => {
   const handleSubmit = (e) => {
@@ -13,20 +17,14 @@ export const Register = (props) => {
   return (
     <>
       <HeaderAccount />
+      <BackgroundOpacity />
 
       <div className={styles.MainDiv}>
         <form onSubmit={handleSubmit}>
-          <input
-            className={styles.NameBox}
-            type="string"
-            placeholder="Full Name"
-          ></input>
-          <input className={styles.EmailBox} type="email" placeholder="Email" />
-          <input
-            className={styles.PasswordBox}
-            type="password"
-            placeholder="Password"
-          />
+          <NameBox />
+          <EmailBox />
+          <PasswordBox />
+
           <div className={styles.AccountButton}>
             <AccountButton text={"Register"} linkTo={"/SearchPage"} />
           </div>
