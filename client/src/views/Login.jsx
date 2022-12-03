@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import GenericButton from "../components/GenericButton";
 import HeaderAccount from "../components/HeaderAccount";
+import styles from "./Login.module.css";
+import AccountButton from "../components/AccountButton";
+import ChangeButton from "../components/ChangeButton";
 
 export const Login = (props) => {
   const handleSubmit = (e) => {
@@ -14,20 +17,29 @@ export const Login = (props) => {
   return (
     <>
       <HeaderAccount />
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">email</label>
-        <input type="email" placeholder="email@example.com" />
 
-        <label htmlFor="password">password</label>
-        <input type="password" placeholder="********" />
+      <div className={styles.WelcomeMessage}>Welcome Back!</div>
 
-        <GenericButton onClick={testSubmit} text={"Login"} linkTo={"/"} />
-      </form>
+      <div className={styles.MainDiv}>
+        <form onSubmit={handleSubmit}>
+          <input className={styles.EmailBox} type="email" placeholder="Email" />
 
-      <GenericButton
-        text={"Don't have an account? Register here."}
-        linkTo={"/register"}
-      />
+          <input
+            className={styles.PasswordBox}
+            type="password"
+            placeholder="Password"
+          />
+
+          <div className={styles.AccountButton}>
+            <AccountButton text={"Login"} linkTo={"/SearchPage"} />
+          </div>
+        </form>
+
+        <ChangeButton
+          text={"Don't have an account? Register here."}
+          linkTo={"/register"}
+        />
+      </div>
     </>
   );
 };
