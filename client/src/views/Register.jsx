@@ -14,8 +14,6 @@ export const Register = (props) => {
     <>
       <HeaderAccount />
 
-      <div className={styles.WelcomeMessage}>Welcome To SRZ Music!</div>
-
       <div className={styles.MainDiv}>
         <form onSubmit={handleSubmit}>
           <input

@@ -8,6 +8,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
+      <div className={styles.BackgroundOpacity}> </div>
 
       <div
         className={styles.BackgroundImage}
@@ -19,22 +20,23 @@ const HomePage = () => {
           width: 600,
         }}
       >
-        <div className={styles.Message}>
-          <label htmlFor="Message">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
-        </div>
+        <div className={styles.MainDiv}>
+          <div className={styles.Message}>
+            <label htmlFor="Message">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
+          </div>
 
-        <div className={styles.SearchButton}>
-          <SearchButton
-            linkTo={"/SearchPage"}
-            text={"Start your listening experience"}
-          />
+          <div className={styles.SearchButton}>
+            <SearchButton
+              linkTo={"/SearchPage"}
+              text={"Start your listening experience"}
+            />
+          </div>
         </div>
-
-        <div className={styles.LegalMessageDiv}>
-          <label className={styles.LegalMessage} htmlFor="LegalMessage">
-            Copyright, Privacy, and Acceptable Use
-          </label>
-        </div>
+      </div>
+      <div className={styles.LegalMessageDiv}>
+        <label className={styles.LegalMessage} htmlFor="LegalMessage">
+          Copyright, Privacy, and Acceptable Use
+        </label>
       </div>
     </>
   );

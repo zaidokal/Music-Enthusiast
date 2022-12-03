@@ -18,8 +18,6 @@ export const Login = (props) => {
     <>
       <HeaderAccount />
 
-      <div className={styles.WelcomeMessage}>Welcome Back!</div>
-
       <div className={styles.MainDiv}>
         <form onSubmit={handleSubmit}>
           <input className={styles.EmailBox} type="email" placeholder="Email" />
