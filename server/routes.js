@@ -15,11 +15,7 @@ storage.init({
   encoding: "utf8",
 });
 
-const initializePassport = require("./passport-config");
-const { appendFile } = require("fs");
-initializePassport(passport, (email) =>
-  storage.valuesWithKeyMatch(async (e) => (await storage.getItem(e)) === email)
-);
+router.use(passport.initialize(passport, storage));
 
 // Get the parsed arrays.
 const parseResults = parser();
@@ -115,9 +111,8 @@ router.post("/auth/accounts", async (req, res) => {
 router.post(
   "/auth/login",
   passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/auth/login",
-    failureFlash: true,
+    successMessage: "success",
+    failureMessage: "/api/auth/login",
   })
 );
 
