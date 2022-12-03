@@ -5,6 +5,8 @@ const parser = require("./parser");
 const stringSimilarity = require("string-similarity");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
 
 // Initialize database.
 const storage = require("node-persist");
@@ -15,7 +17,18 @@ storage.init({
   encoding: "utf8",
 });
 
-router.use(passport.initialize(passport, storage));
+router.use(
+  session({
+    secret: "secretcode",
+    resave: true,
+    saveUninitialized: false,
+  })
+);
+
+router.use(cookieParser("secretcode"));
+router.use(passport.initialize());
+router.use(passport.session());
+require("./passport-config")(passport, storage);
 
 // Get the parsed arrays.
 const parseResults = parser();
@@ -108,13 +121,30 @@ router.post("/auth/accounts", async (req, res) => {
 
 // Verification
 // POST request to login
-router.post(
-  "/auth/login",
-  passport.authenticate("local", {
-    successMessage: "success",
-    failureMessage: "/api/auth/login",
-  })
-);
+router.post("/auth/login", (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) throw err;
+    if (!user) res.send("No User Exists");
+    else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send("Successfully Authenticated");
+        console.log(req.user);
+      });
+    }
+  })(req, res, next);
+});
+
+// router.post(
+//   "/auth/login",
+//   passport.authenticate("local", {
+//     failureRedirect: "/api/genres",
+//     failureMessage: true,
+//   }),
+//   function (req, res) {
+//     res.send("bruh");
+//   }
+// );
 
 // Some sort of request for JWT
 // PUT request to change password

@@ -1,59 +1,62 @@
 const LocalStrategy = require("passport-local").Strategy;
-
 const bcrypt = require("bcrypt");
 
-function initialize(passport, storage) {
+function initialize(passport, db) {
   passport.use(
-    new LocalStrategy(async (email, password, done) => {
-      if (await storage.keys().includes(email)) {
-        let user = storage.getItem(email);
+    new LocalStrategy(
+      {
+        usernameField: "email",
+        passwordField: "password",
+      },
+      async (email, password, done) => {
+        let emails = await db.keys();
+        if (emails.includes(email)) {
+          let user = await db.getItem(email);
 
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (err) throw err;
-          if (result === true) {
-            return done(null, email);
-          } else {
-            return done(null, false);
-          }
-        });
-      } else {
-        return done(null, false);
+          bcrypt.compare(password, user.password, (err, result) => {
+            if (err) throw err;
+            if (result === true) {
+              let userObj = {
+                userEmail: email,
+                username: user.username,
+                password: user.password,
+              };
+              return done(null, userObj);
+            } else {
+              return done(null, false);
+            }
+          });
+        } else {
+          return done(null, false);
+        }
       }
-    })
+    )
   );
 
-  passport.serializeUser((email, cb) => {
-    cb(null, email);
+  passport.serializeUser(function (userObj, cb) {
+    process.nextTick(function () {
+      return cb(null, {
+        email: userObj.userEmail,
+        username: userObj.username,
+        password: userObj.password,
+      });
+    });
   });
-  passport.deserializeUser(async (email, cb) => {
-    let user = await storage.getItem(email);
-    cb(err, user);
+
+  passport.deserializeUser(function (userObj, cb) {
+    process.nextTick(function () {
+      return cb(null, userObj);
+    });
+  });
+
+  passport.serializeUser((userObj, done) => {
+    done(null, userObj.userEmail);
+  });
+
+  passport.deserializeUser(async (userEmail, done) => {
+    let user = await storage.getItem(userEmail);
+    done(err, user);
   });
 }
-
-// function initialize(passport, getUserByEmail) {
-//   const authenticateUser = async (email, password, done) => {
-//     const user = getUserByEmail(email);
-
-//     if (user == null) {
-//       return done(null, false, { message: "User not found." });
-//     }
-
-//     try {
-//       if (await bcrypt.compare(password, user.password)) {
-//         return done(null, user);
-//       } else {
-//         return done(null, false, { message: "Incorrect password." });
-//       }
-//     } catch (err) {
-//       done(err);
-//     }
-//   };
-
-//   passport.use(new LocalStrategy({ usernameField: "email" }, authenticateUser));
-
-//   passport.serializeUser((user, done) => {});
-//   passport.deserializeUser((user, done) => {});
-// }
 
 module.exports = initialize;
