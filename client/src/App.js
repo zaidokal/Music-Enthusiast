@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import HomePage from "./views/HomePage";
-import { Login } from "./Login";
-import { Register } from "./Register";
+import { Login } from "./views/Login";
+import { Register } from "./views/Register";
 
 const App = () => {
   // const [currentForm, setCurrentForm] = useState("login");
