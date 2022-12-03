@@ -3,12 +3,13 @@ import SearchButton from "../components/SearchButton";
 import "./HomePage.module.css";
 import Header from "../components/Header";
 import styles from "./HomePage.module.css";
+import BackgroundOpacity from "../components/BackgroundOpacity";
 
 const HomePage = () => {
   return (
     <>
       <Header />
-      <div className={styles.BackgroundOpacity}> </div>
+      <BackgroundOpacity />
 
       <div
         className={styles.BackgroundImage}

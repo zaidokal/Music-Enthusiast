@@ -7,7 +7,7 @@ import BackgroundOpacity from "../components/BackgroundOpacity";
 import EmailBox from "../components/EmailBox";
 import PasswordBox from "../components/PasswordBox";
 
-export const Login = (props) => {
+export const SearchResults = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -18,18 +18,7 @@ export const Login = (props) => {
       <BackgroundOpacity />
 
       <div className={styles.MainDiv}>
-        <form onSubmit={handleSubmit}>
-          <EmailBox />
-          <PasswordBox />
-          <div className={styles.AccountButton}>
-            <AccountButton text={"Login"} linkTo={"/SearchPage"} />
-          </div>
-        </form>
-
-        <ChangeButton
-          text={"Don't have an account? Register here."}
-          linkTo={"/register"}
-        />
+        <form onSubmit={handleSubmit}>Reults</form>
       </div>
     </>
   );

@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import AccountButton from "../components/AccountButton";
+import BackgroundOpacity from "../components/BackgroundOpacity";
+import ChangeButton from "../components/ChangeButton";
+import EmailBox from "../components/EmailBox";
 import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
+import PasswordBox from "../components/PasswordBox";
+import SearchInput from "../components/SearchInput";
+import styles from "./SearchPage.module.css";
 
 export const SearchPage = (props) => {
   const handleSubmit = (e) => {
@@ -10,19 +17,33 @@ export const SearchPage = (props) => {
   return (
     <>
       <Header />
+      <BackgroundOpacity />
 
-      <label htmlFor="CompanyName">SRZ Music</label>
+      <div className={styles.MainDiv}>
+        <form onSubmit={handleSubmit}>
+          <label>Find your next favourite song!</label>
 
-      <label htmlFor="Message">Find your next favourite song!</label>
+          <input
+            className={styles.TextBox}
+            type="string"
+            placeholder="Track Name"
+          ></input>
 
-      <label htmlFor="TrackName">Track Name</label>
-      <input></input>
-      <label htmlFor="Artist">Artist</label>
-      <input></input>
-      <label htmlFor="Genre">Genre</label>
-      <input></input>
+          <input
+            className={styles.TextBox}
+            type="string"
+            placeholder="Artist"
+          ></input>
 
-      <GenericButton text="Search" />
+          <input
+            className={styles.TextBox}
+            type="string"
+            placeholder="Genre"
+          ></input>
+
+          <GenericButton text={"Submit"} linkTo={"/SearchResults"} />
+        </form>
+      </div>
     </>
   );
 };
