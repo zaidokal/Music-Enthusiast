@@ -21,3 +21,17 @@ body {
 .container {
   background-image: url(../Image.jpg);
 }
+
+.Message {
+  padding: 30px;
+  margin-top: 250px;
+  margin-left: 100px;
+  font-size: 60px;
+  background-color: rgba(0, 0, 0, 0.705);
+  width: 580px;
+}
+
+.SearchButton {
+  margin-top: 10px;
+  margin-left: 250px;
+}
