@@ -20,6 +20,8 @@ function initialize(passport, db) {
                 userEmail: email,
                 username: user.username,
                 password: user.password,
+                deactivated: user.deactivated,
+                admin: user.admin
               };
               return done(null, userObj);
             } else {
@@ -39,6 +41,8 @@ function initialize(passport, db) {
         email: userObj.userEmail,
         username: userObj.username,
         password: userObj.password,
+        deactivated: userObj.deactivated,
+        admin: userObj.admin
       });
     });
   });

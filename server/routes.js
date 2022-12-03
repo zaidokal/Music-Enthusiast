@@ -110,6 +110,8 @@ router.post("/auth/accounts", async (req, res) => {
       storage.setItem(req.body.email, {
         username: req.body.userName,
         password: hashedPassword,
+        deactivated: false,
+        admin: false,
       });
 
       res.send("Successfully created account.");
@@ -149,10 +151,29 @@ router.post("/auth/login", (req, res, next) => {
 // Some sort of request for JWT
 // PUT request to change password
 
+// POST request to logout
+router.post('/auth/logout', function(req, res, next){
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.send("Successfully logged out");
+    console.log(req.user);
+  });
+});
+
 // ----- Unauthorized Users ----- api/open
+
+// GET to get policies
+router.get("/open/policies", async (req, res) => {
+  let existingPolicies = await storage.getItem("policies");
+  if (!existingPolicies) {
+    res.send("ERROR: policies not yet created");
+  } else if (existingPolicies) {
+    res.send(await storage.valuesWithKeyMatch("policies"));
+  }
+});
+
 // GET Request for track search results
 // soft-matched
-
 router.get("/open/tracks", (req, res) => {
   const { trackTitle, artist, genreName } = req.query;
 
@@ -310,17 +331,22 @@ router.post(
   "/secure/lists",
   body("listName").not().isEmpty().trim().escape(),
   async (req, res) => {
-    let existingList = await storage.getItem(req.body.listName);
-    if (existingList) {
-      res.send("ERROR: existing list with this name");
-    } else if (!existingList) {
-      storage.setItem(req.body.listName, {
-        creator: req.body.userName,
-        tracks: req.body.tracks,
-        privateFlag: "private",
-        type: "list",
-      });
-      res.send("Successfully added list!");
+    if (req.isAuthenticated()){
+      let existingList = await storage.getItem(req.body.listName);
+      if (existingList) {
+        res.send("ERROR: existing list with this name");
+      } else if (!existingList) {
+        storage.setItem(req.body.listName, {
+          creator: req.body.userName,
+          tracks: req.body.tracks,
+          privateFlag: "private",
+          type: "list",
+        });
+        res.send("Successfully added list!");
+      }
+    }
+    else {
+      res.send("User is not logged in!");
     }
   }
 );
@@ -331,30 +357,41 @@ router.put(
   body("listName").not().isEmpty(),
   body("tracks").not().isEmpty(),
   async (req, res) => {
-    let existingList = await storage.getItem(req.params.name);
-    if (!existingList) {
-      res.send("ERROR: no existing list with this name");
-    } else if (existingList) {
-      storage.setItem(req.params.name, {
-        creator: req.body.userName,
-        tracks: req.body.tracks,
-        privateFlag: req.body.privateFlag,
-        type: "list",
-      });
-      res.send("Successfully updated tracks in list!");
+    if (req.isAuthenticated()){
+      let existingList = await storage.getItem(req.params.name);
+      if (!existingList) {
+        res.send("ERROR: no existing list with this name");
+      } else if (((existingList) && (existingList.creator == req.user.username)) || (req.user.admin == true)) {
+        storage.setItem(req.params.name, {
+          creator: req.body.userName,
+          tracks: req.body.tracks,
+          privateFlag: req.body.privateFlag,
+          type: "list",
+        });
+        res.send("Successfully updated tracks in list!");
+      }
+    }
+    else {
+      res.send("User is not logged in!");
     }
   }
 );
 
 // DELETE Request to delete playlist
 router.delete("/secure/lists/:name", async (req, res) => {
-  let existingList = await storage.getItem(req.params.name);
-  if (!existingList) {
-    res.send("ERROR: no existing list with this name");
-  } else if (existingList) {
-    storage.removeItem(req.params.name);
-    res.send("Successfully deleted the list!");
+  if (req.isAuthenticated()){
+    let existingList = await storage.getItem(req.params.name);
+    if (!existingList) {
+      res.send("ERROR: no existing list with this name");
+    } else if (((existingList) && (existingList.creator == req.user.username)) || (req.user.admin == true)) {
+      storage.removeItem(req.params.name);
+      res.send("Successfully deleted the list!");
+    }
   }
+  else {
+    res.send("User is not logged in!");
+  }
+
 });
 
 // POST Request to create review
@@ -362,18 +399,24 @@ router.post(
   "/secure/reviews",
   body("reviewName").not().isEmpty().trim().escape(),
   async (req, res) => {
-    let existingReview = await storage.getItem(req.body.reviewName);
-    if (existingReview) {
-      res.send("ERROR: existing review with this name");
-    } else if (!existingReview) {
-      storage.setItem(req.body.reviewName, {
-        list: req.body.listName,
-        rating: req.body.rating,
-        comment: req.body.comment,
-        hidden: false,
-        type: "review",
-      });
-      res.send("Successfully added review!");
+    if (req.isAuthenticated()){
+      let existingReview = await storage.getItem(req.body.reviewName);
+      if (existingReview) {
+        res.send("ERROR: existing review with this name");
+      } else if (!existingReview) {
+        storage.setItem(req.body.reviewName, {
+          creator: req.body.userName,
+          list: req.body.listName,
+          rating: req.body.rating,
+          comment: req.body.comment,
+          hidden: false,
+          type: "review",
+        });
+        res.send("Successfully added review!");
+      }
+    }
+    else {
+      res.send("User is not logged in!");
     }
   }
 );
@@ -383,30 +426,41 @@ router.put(
   "/secure/reviews/:name",
   body("reviewName").not().isEmpty(),
   async (req, res) => {
-    let existingReview = await storage.getItem(req.params.name);
-    if (!existingReview) {
-      res.send("ERROR: no existing review with this name");
-    } else if (existingReview) {
-      storage.setItem(req.params.name, {
-        list: req.body.listName,
-        rating: req.body.rating,
-        comment: req.body.comment,
-        hidden: false,
-        type: "review",
-      });
-      res.send("Successfully added review!");
+    if (req.isAuthenticated()){
+      let existingReview = await storage.getItem(req.params.name);
+      if (!existingReview) {
+        res.send("ERROR: no existing review with this name");
+      } else if (((existingReview) && (existingReview.creator == req.user.username)) || (req.user.admin == true)) {
+        storage.setItem(req.params.name, {
+          creator: req.body.userName,
+          list: req.body.listName,
+          rating: req.body.rating,
+          comment: req.body.comment,
+          hidden: false,
+          type: "review",
+        });
+        res.send("Successfully added review!");
+      }
+    }
+    else {
+      res.send("User is not logged in!");
     }
   }
 );
 
 // DELETE Request to delete a review
 router.delete("/secure/reviews/:name", async (req, res) => {
-  let existingReview = await storage.getItem(req.params.name);
-  if (!existingReview) {
-    res.send("ERROR: no existing review with this name");
-  } else if (existingReview) {
-    storage.removeItem(req.params.name);
-    res.send("Successfully deleted the review!");
+  if (req.isAuthenticated()){
+    let existingReview = await storage.getItem(req.params.name);
+    if (!existingReview) {
+      res.send("ERROR: no existing review with this name");
+    } else if (((existingReview) && (existingReview.creator == req.user.username)) || (req.user.admin == true)) {
+      storage.removeItem(req.params.name);
+      res.send("Successfully deleted the review!");
+    }
+  }
+  else {
+    res.send("User is not logged in!");
   }
 });
 
@@ -418,38 +472,40 @@ router.put(
   "/admin/reviews/:name",
   body("reviewName").not().isEmpty(),
   async (req, res) => {
-    let existingReview = await storage.getItem(req.params.name);
-    if (!existingReview) {
-      res.send("ERROR: no existing review with this name");
-    } else if (existingReview) {
-      storage.setItem(req.body.reviewName, {
-        list: req.body.listName,
-        rating: req.body.rating,
-        comment: req.body.comment,
-        hidden: true,
-        type: "review",
-      });
-      res.send("Successfully hid review!");
+
+    if ((req.isAuthenticated()) && (req.user.admin == true)){
+      let existingReview = await storage.getItem(req.params.name);
+      if (!existingReview) {
+        res.send("ERROR: no existing review with this name");
+      } else if (existingReview) {
+        storage.setItem(req.params.name, {
+          creator: req.body.userName,
+          list: req.body.listName,
+          rating: req.body.rating,
+          comment: req.body.comment,
+          hidden: true,
+          type: "review",
+        });
+        res.send("Successfully hid review!");
+      }
+    }
+    else {
+      res.send("No permissions.");
     }
   }
 );
 
-// GET to get policies
-router.get("/admin/policies", async (req, res) => {
-  let existingPolicies = await storage.getItem("policies");
-  if (!existingPolicies) {
-    res.send("ERROR: policies not yet created");
-  } else if (existingPolicies) {
-    res.send(await storage.valuesWithKeyMatch("policies"));
-  }
-});
-
 // PUT to create/modify policies
 router.put("/admin/policies", async (req, res) => {
-  storage.setItem("policies", {
-    privacy: req.body.privacy,
-    dmca: req.body.dmca,
-    aup: req.body.aup,
-  });
+  if ((req.isAuthenticated()) && (req.user.admin == true)){
+    storage.setItem("policies", {
+      privacy: req.body.privacy,
+      dmca: req.body.dmca,
+      aup: req.body.aup,
+    });
+  }
+  else {
+    res.send("No permissions.");
+  }
 });
 module.exports = router;
