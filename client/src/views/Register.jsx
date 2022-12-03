@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GenericButton from "../components/GenericButton";
+import HeaderAccount from "../components/HeaderAccount";
 
 export const Register = (props) => {
   const handleSubmit = (e) => {
@@ -8,6 +9,8 @@ export const Register = (props) => {
 
   return (
     <>
+      <HeaderAccount />
+
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Full Name</label>
         <input

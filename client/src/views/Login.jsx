@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import GenericButton from "../components/GenericButton";
+import HeaderAccount from "../components/HeaderAccount";
 
 export const Login = (props) => {
   const handleSubmit = (e) => {
@@ -12,6 +13,7 @@ export const Login = (props) => {
 
   return (
     <>
+      <HeaderAccount />
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">email</label>
         <input type="email" placeholder="email@example.com" />
