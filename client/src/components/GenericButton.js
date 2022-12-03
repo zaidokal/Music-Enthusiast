@@ -6,7 +6,9 @@ const GenericButton = (props) => {
   return (
     <div className={styles.container}>
       <Link to={props.linkTo}>
-        <button onClick={props.onClick}>{props.text}</button>
+        <button className={styles.Button} onClick={props.onClick}>
+          {props.text}
+        </button>
       </Link>
     </div>
   );
