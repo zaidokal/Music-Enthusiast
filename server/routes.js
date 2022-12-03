@@ -110,6 +110,8 @@ router.post("/auth/accounts", async (req, res) => {
       storage.setItem(req.body.email, {
         username: req.body.userName,
         password: hashedPassword,
+        deactivated: false,
+        admin: false,
       });
 
       res.send("Successfully created account.");
@@ -159,9 +161,19 @@ router.post('/auth/logout', function(req, res, next){
 });
 
 // ----- Unauthorized Users ----- api/open
+
+// GET to get policies
+router.get("/open/policies", async (req, res) => {
+  let existingPolicies = await storage.getItem("policies");
+  if (!existingPolicies) {
+    res.send("ERROR: policies not yet created");
+  } else if (existingPolicies) {
+    res.send(await storage.valuesWithKeyMatch("policies"));
+  }
+});
+
 // GET Request for track search results
 // soft-matched
-
 router.get("/open/tracks", (req, res) => {
   const { trackTitle, artist, genreName } = req.query;
 
@@ -458,38 +470,39 @@ router.put(
   "/admin/reviews/:name",
   body("reviewName").not().isEmpty(),
   async (req, res) => {
-    let existingReview = await storage.getItem(req.params.name);
-    if (!existingReview) {
-      res.send("ERROR: no existing review with this name");
-    } else if (existingReview) {
-      storage.setItem(req.body.reviewName, {
-        list: req.body.listName,
-        rating: req.body.rating,
-        comment: req.body.comment,
-        hidden: true,
-        type: "review",
-      });
-      res.send("Successfully hid review!");
+
+    if ((req.isAuthenticated()) && (req.user.admin == true)){
+      let existingReview = await storage.getItem(req.params.name);
+      if (!existingReview) {
+        res.send("ERROR: no existing review with this name");
+      } else if (existingReview) {
+        storage.setItem(req.body.reviewName, {
+          list: req.body.listName,
+          rating: req.body.rating,
+          comment: req.body.comment,
+          hidden: true,
+          type: "review",
+        });
+        res.send("Successfully hid review!");
+      }
+    }
+    else {
+      res.send("No permissions.");
     }
   }
 );
 
-// GET to get policies
-router.get("/admin/policies", async (req, res) => {
-  let existingPolicies = await storage.getItem("policies");
-  if (!existingPolicies) {
-    res.send("ERROR: policies not yet created");
-  } else if (existingPolicies) {
-    res.send(await storage.valuesWithKeyMatch("policies"));
-  }
-});
-
 // PUT to create/modify policies
 router.put("/admin/policies", async (req, res) => {
-  storage.setItem("policies", {
-    privacy: req.body.privacy,
-    dmca: req.body.dmca,
-    aup: req.body.aup,
-  });
+  if ((req.isAuthenticated()) && (req.user.admin == true)){
+    storage.setItem("policies", {
+      privacy: req.body.privacy,
+      dmca: req.body.dmca,
+      aup: req.body.aup,
+    });
+  }
+  else {
+    res.send("No permissions.");
+  }
 });
 module.exports = router;
