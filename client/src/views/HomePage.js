@@ -1,8 +1,5 @@
 import React from "react";
-import { Login } from "../views/Login";
-import { Register } from "../views/Register";
-import { SearchPage } from "../views/SearchPage";
-import GenericButton from "../components/GenericButton";
+import SearchButton from "../components/SearchButton";
 import "./HomePage.module.css";
 import Header from "../components/Header";
 import styles from "./HomePage.module.css";
@@ -27,7 +24,7 @@ const HomePage = () => {
         </div>
 
         <div className={styles.SearchButton}>
-          <GenericButton
+          <SearchButton
             linkTo={"/SearchPage"}
             text={"Start your listening experience"}
           />
