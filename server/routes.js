@@ -361,7 +361,7 @@ router.put(
       let existingList = await storage.getItem(req.params.name);
       if (!existingList) {
         res.send("ERROR: no existing list with this name");
-      } else if (existingList) {
+      } else if (((existingList) && (existingList.creator == req.user.username)) || (req.user.admin == true)) {
         storage.setItem(req.params.name, {
           creator: req.body.userName,
           tracks: req.body.tracks,
@@ -383,7 +383,7 @@ router.delete("/secure/lists/:name", async (req, res) => {
     let existingList = await storage.getItem(req.params.name);
     if (!existingList) {
       res.send("ERROR: no existing list with this name");
-    } else if (existingList) {
+    } else if (((existingList) && (existingList.creator == req.user.username)) || (req.user.admin == true)) {
       storage.removeItem(req.params.name);
       res.send("Successfully deleted the list!");
     }
@@ -405,6 +405,7 @@ router.post(
         res.send("ERROR: existing review with this name");
       } else if (!existingReview) {
         storage.setItem(req.body.reviewName, {
+          creator: req.body.userName,
           list: req.body.listName,
           rating: req.body.rating,
           comment: req.body.comment,
@@ -429,8 +430,9 @@ router.put(
       let existingReview = await storage.getItem(req.params.name);
       if (!existingReview) {
         res.send("ERROR: no existing review with this name");
-      } else if (existingReview) {
+      } else if (((existingReview) && (existingReview.creator == req.user.username)) || (req.user.admin == true)) {
         storage.setItem(req.params.name, {
+          creator: req.body.userName,
           list: req.body.listName,
           rating: req.body.rating,
           comment: req.body.comment,
@@ -452,7 +454,7 @@ router.delete("/secure/reviews/:name", async (req, res) => {
     let existingReview = await storage.getItem(req.params.name);
     if (!existingReview) {
       res.send("ERROR: no existing review with this name");
-    } else if (existingReview) {
+    } else if (((existingReview) && (existingReview.creator == req.user.username)) || (req.user.admin == true)) {
       storage.removeItem(req.params.name);
       res.send("Successfully deleted the review!");
     }
@@ -476,7 +478,8 @@ router.put(
       if (!existingReview) {
         res.send("ERROR: no existing review with this name");
       } else if (existingReview) {
-        storage.setItem(req.body.reviewName, {
+        storage.setItem(req.params.name, {
+          creator: req.body.userName,
           list: req.body.listName,
           rating: req.body.rating,
           comment: req.body.comment,
