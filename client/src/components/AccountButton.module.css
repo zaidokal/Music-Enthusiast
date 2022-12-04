@@ -1,10 +1,18 @@
 .Button {
   background-color: transparent;
-  color: white;
+  color: #d3d3d3;
   position: relative;
   font-size: 16px;
-  border-color: rgb(165, 208, 243);
-  border-radius: 30px;
+  font-family: Asap-Condensed-SemiBold;
+  border-color: #d3d3d3;
+  border-radius: 10px;
   width: 120px;
   height: 45px;
+  transition: 0.3s;
+}
+
+.Button:hover {
+  background-color: #a4161a;
+  border-color: #a4161a;
+  cursor: pointer;
 }

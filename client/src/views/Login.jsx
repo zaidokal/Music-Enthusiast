@@ -6,6 +6,7 @@ import ChangeButton from "../components/ChangeButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import EmailBox from "../components/EmailBox";
 import PasswordBox from "../components/PasswordBox";
+import SearchButton from "../components/SearchButton";
 
 export const Login = (props) => {
   const handleSubmit = (e) => {

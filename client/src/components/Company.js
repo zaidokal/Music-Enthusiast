@@ -7,7 +7,8 @@ const Company = (props) => {
     <div className={styles.container}>
       <Link to={props.linkTo}>
         <button className={styles.Company} onClick={props.onClick}>
-          {props.text}
+          <span className={styles.SRZ}>SRZ</span>{" "}
+          <span className={styles.Music}>Music</span>
         </button>
       </Link>
     </div>

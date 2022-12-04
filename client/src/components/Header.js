@@ -13,7 +13,7 @@ const Header = (props) => {
         <div className={styles.CompanyDiv}>
           <Link>
             <div>
-              <Company linkTo={"/"} text={"SRZ Music"} />
+              <Company linkTo={"/"} />
             </div>
             <label linkTo={"/"} className={styles.Company}></label>
           </Link>
@@ -25,7 +25,7 @@ const Header = (props) => {
               <AccountButton
                 className={styles.Button}
                 linkTo={"/login"}
-                text={"Login"}
+                text={"LOGIN"}
               />
             </div>
           </Link>
@@ -33,7 +33,7 @@ const Header = (props) => {
         <div className={styles.AccountDiv2}>
           <Link>
             <div>
-              <AccountButton linkTo={"/register"} text={"Register"} />
+              <AccountButton linkTo={"/register"} text={"REGISTER"} />
             </div>
           </Link>
         </div>
