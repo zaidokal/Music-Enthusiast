@@ -1,10 +1,20 @@
 .Company {
   align-items: center;
-  /* color: white; */
-  font-size: 30px;
-  font-family: Arial, Helvetica, sans-serif;
   line-height: 80px;
   padding-left: 25px;
-  color: white;
+  color: #d3d3d3;
   background-color: transparent;
+  border-color: transparent;
+}
+
+.SRZ {
+  font-family: Azeret-Mono-Regular;
+  font-size: 30px;
+  margin-right: 2px;
+  letter-spacing: 5px;
+}
+
+.Music {
+  font-family: Asap-Condensed-Regular;
+  font-size: 20px;
 }

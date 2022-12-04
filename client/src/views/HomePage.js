@@ -23,7 +23,9 @@ const HomePage = () => {
       >
         <div className={styles.MainDiv}>
           <div className={styles.Message}>
-            <label htmlFor="Message">LISTEN TO MUSIC ANYTIME. ANYWHERE.</label>
+            <label htmlFor="Message">
+              LISTEN TO MUSIC ANYTIME. <br></br> ANYWHERE.
+            </label>
           </div>
 
           <div className={styles.SearchButton}>

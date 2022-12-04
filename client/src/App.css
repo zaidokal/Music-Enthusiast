@@ -1,3 +1,18 @@
+@font-face {
+  font-family: Asap-Condensed-Regular;
+  src: url("Fonts/Asap_Condensed/AsapCondensed-Regular.ttf");
+}
+
+@font-face {
+  font-family: Asap-Condensed-SemiBold;
+  src: url("Fonts/Asap_Condensed/AsapCondensed-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: Azeret-Mono-Regular;
+  src: url("Fonts/Azeret_Mono/AzeretMono-Regular.ttf");
+}
+
 .App {
   text-align: center;
 }
