@@ -4,7 +4,9 @@
   position: relative;
   font-size: 16px;
   font-family: Asap-Condensed-SemiBold;
-  border-color: #d3d3d3;
+  outline: #d3d3d3 solid 2px;
+  border: none;
+  /* border-color: transparent; */
   border-radius: 10px;
   width: 120px;
   height: 45px;
@@ -13,6 +15,6 @@
 
 .Button:hover {
   background-color: #a4161a;
-  border-color: #a4161a;
+  outline: #a4161a solid 2px;
   cursor: pointer;
 }
