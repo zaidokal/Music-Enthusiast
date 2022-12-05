@@ -1,0 +1,32 @@
+.googleBTN {
+  padding: 15px;
+  width: 100%;
+  border: 0px none;
+  background-color: #5e74d6;
+  border-radius: 0.5rem;
+  color: rgb(0, 0, 0);
+  transition: all 0.4s;
+}
+
+.googleBTN:hover {
+  /* transition: all 0.4s;
+  background-color: white;
+  border: 1px solid black;
+  color: black; */
+  cursor: pointer;
+}
+
+.GoogleIcon {
+  background: conic-gradient(
+      from -45deg,
+      #ea4335 110deg,
+      #4285f4 90deg 180deg,
+      #34a853 180deg 270deg,
+      #fbbc05 270deg
+    )
+    73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: icon;
+  background-clip: icon;
+  /* color: transparent; */
+  -webkit-text-fill-color: transparent;
+}

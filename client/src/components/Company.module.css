@@ -5,6 +5,7 @@
   color: #d3d3d3;
   background-color: transparent;
   border-color: transparent;
+  transition: 0.3s;
 }
 
 .SRZ {
@@ -17,4 +18,9 @@
 .Music {
   font-family: Asap-Condensed-Regular;
   font-size: 20px;
+}
+
+.Company:hover {
+  cursor: pointer;
+  color: #a4161a;
 }
