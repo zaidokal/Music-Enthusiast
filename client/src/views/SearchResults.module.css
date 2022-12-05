@@ -33,22 +33,18 @@
   margin-bottom: 2vh;
 }
 
-/* width */
 ::-webkit-scrollbar {
   width: 15px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #a4161a;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #881216;
 }
