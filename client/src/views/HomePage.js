@@ -8,38 +8,38 @@ import BackgroundOpacity from "../components/BackgroundOpacity";
 const HomePage = () => {
   return (
     <>
-      <Header />
-      <BackgroundOpacity />
+      <div className={styles.PageDiv}>
+        <Header />
+        <BackgroundOpacity />
 
-      <div
-        className={styles.BackgroundImage}
-        style={{
-          backgroundImage: `url(${Image})`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-          height: 600,
-          width: 600,
-        }}
-      >
-        <div className={styles.MainDiv}>
-          <div className={styles.Message}>
-            <label htmlFor="Message">
+        <div
+          className={styles.BackgroundImage}
+          style={{
+            backgroundImage: `url(${Image})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+            height: 600,
+            width: 600,
+          }}
+        >
+          <div className={styles.MainDiv}>
+            <div className={styles.Message}>
               LISTEN TO MUSIC ANYTIME. <br></br> ANYWHERE.
-            </label>
-          </div>
+            </div>
 
-          <div className={styles.SearchButton}>
-            <SearchButton
-              linkTo={"/SearchPage"}
-              text={"Start your listening experience"}
-            />
+            <div className={styles.SearchButton}>
+              <SearchButton
+                linkTo={"/SearchPage"}
+                text={"Start your listening experience"}
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.LegalMessageDiv}>
-        <label className={styles.LegalMessage} htmlFor="LegalMessage">
-          Copyright, Privacy, and Acceptable Use
-        </label>
+        <div className={styles.LegalMessageDiv}>
+          <label className={styles.LegalMessage} htmlFor="LegalMessage">
+            Copyright, Privacy, and Acceptable Use
+          </label>
+        </div>
       </div>
     </>
   );
