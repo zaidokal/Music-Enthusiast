@@ -11,12 +11,10 @@ const HeaderAccount = (props) => {
     <>
       <div className={styles.MainDiv}>
         <div className={styles.CompanyDiv}>
-          <Link>
-            <div>
-              <Company linkTo={"/"} text={"SRZ Music"} />
-            </div>
-            <label linkTo={"/"} className={styles.Company}></label>
-          </Link>
+          <div>
+            <Company linkTo={"/"} text={"SRZ Music"} />
+          </div>
+          <label linkTo={"/"} className={styles.Company}></label>
         </div>
       </div>
     </>

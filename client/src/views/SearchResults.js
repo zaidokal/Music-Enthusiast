@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import HeaderAccount from "../components/HeaderAccount";
-import styles from "./Login.module.css";
+import styles from "./SearchResults.module.css";
 import AccountButton from "../components/AccountButton";
 import ChangeButton from "../components/ChangeButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
@@ -18,7 +18,63 @@ export const SearchResults = (props) => {
       <BackgroundOpacity />
 
       <div className={styles.MainDiv}>
-        <form onSubmit={handleSubmit}>Reults</form>
+        <div className={styles.OuterDiv}>
+          <div className={styles.Title}>Search Results</div>
+
+          <div className={styles.InsideDiv}>
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+            <EmailBox />
+          </div>
+        </div>
+
+        <div className={styles.OuterDiv}>
+          <div className={styles.Title}>Some playlists you might like</div>
+
+          <div className={styles.InsideDiv}>
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+            <PasswordBox />
+          </div>
+        </div>
       </div>
     </>
   );

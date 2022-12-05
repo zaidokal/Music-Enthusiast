@@ -1,0 +1,50 @@
+.MainDiv {
+  display: flex;
+}
+
+.OuterDiv {
+  z-index: 1;
+  width: 43vw;
+  height: 80vh;
+  text-align: center;
+
+  margin-top: 5vh;
+  margin-left: 5vw;
+  z-index: 1;
+}
+
+.InsideDiv {
+  width: 43vw;
+  height: 74vh;
+  overflow-y: scroll;
+  text-align: center;
+
+  padding-top: 4vh;
+  padding-left: 2vw;
+  padding-right: 2vw;
+  padding-bottom: 2vh;
+  background-color: rgb(22, 22, 26);
+  border-radius: 20px;
+}
+
+.Title {
+  text-align: center;
+  font-size: 30px;
+  margin-bottom: 2vh;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a4161a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #881216;
+}

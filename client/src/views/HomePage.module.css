@@ -8,6 +8,13 @@
   font-family: Asap-Condensed-Regular;
 }
 
+.PageDiv {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  transform: scale(1);
+}
+
 body {
   background-color: rgb(18, 14, 36);
   background-image: url("../Image.jpg");
