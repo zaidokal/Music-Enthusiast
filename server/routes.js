@@ -36,7 +36,7 @@ const transport = nodemailer.createTransport({
   port: 465,
   auth: {
     user: "rakhshantest@gmail.com",
-    pass: "dosgrbjmrkhgwmdy",
+    pass: "ebnegegctcgtzvpv",
   },
 });
 
@@ -131,7 +131,7 @@ router.post("/auth/accounts", async (req, res) => {
           verificationToken: verificationToken,
         })
         .then(() => {
-          const verificationURL = `http://localhost:8080/api/auth/verify?token=${verificationToken}&email=${req.body.email};`;
+          const verificationURL = `http://localhost:8080/api/auth/verify?token=${verificationToken}&email=${req.body.email}`;
 
           const mailOptions = {
             from: "rakhshantest@gmail.com",
