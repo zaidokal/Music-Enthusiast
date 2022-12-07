@@ -17,19 +17,23 @@ export const SearchResults = (props) => {
   let artistInput = new URLSearchParams(search).get('artist');
   let genreInput = new URLSearchParams(search).get('genreName');
 
-  const [trackList, setTrackList] = useState({
-    tracks: []
-  });
+  const [trackList, setTrackList] = useState([]);
 
   useEffect(()=>{
     axios
     .get(`http://localhost:8000/api/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`)
     .then(res => {
-      let data = res.data;
-
-      setTrackList({
-        tracks: res.data,
-      });
+      for (let t of res.data){
+        axios
+        .get(`http://localhost:8000/api/open/tracks/${t.track_id}`)
+        .then(res => {
+          res.data[0].track_id = t.track_id;
+          setTrackList(trackList => [...trackList, res.data]);
+        })
+        .catch((error) => {
+          console.error("There has been a error with axios: ", error);
+        });
+      }
 
       // let idObject = [];
       // let i = 0;
@@ -53,7 +57,7 @@ export const SearchResults = (props) => {
     });
   }, []);
 
-  const trackPropList = trackList.tracks.map(t => <TrackCard track={t} key={t.track_id}/>)
+  const trackPropList = trackList.map(t => <TrackCard track={t[0]} key={t[0].track_id}/>)
 
   return (
     <>
