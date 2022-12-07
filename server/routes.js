@@ -555,6 +555,28 @@ router.delete("/secure/reviews/:name", async (req, res) => {
 // ----- Admin ----- api/admin
 // PUT to modify site manager priveleges
 // PUT to modify deactivated status
+router.put(
+  "/admin/accounts/:email",
+  async (req, res) => {
+    if (req.isAuthenticated() && req.user.admin == true) {
+      let user = await storage.getItem(req.params.email);
+      if (!user) {
+        res.send("ERROR: An account with this email does not exist");
+      } else {
+        storage
+          .setItem(req.params.email, {
+            username: user.username,
+            password: user.password,
+            deactivated: req.params.deactivated,
+            admin: req.params.admin,
+            verified: user.verified,
+            verificationToken: user.verificationToken,
+          });
+      }
+    }
+  }
+);
+
 // PUT to modify review hidden status
 router.put(
   "/admin/reviews/:name",
