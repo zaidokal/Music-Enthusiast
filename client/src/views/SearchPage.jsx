@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import AccountButton from "../components/AccountButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
-import ChangeButton from "../components/ChangeButton";
-import EmailBox from "../components/EmailBox";
 import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
-import PasswordBox from "../components/PasswordBox";
-import SearchInput from "../components/SearchInput";
 import styles from "./SearchPage.module.css";
 import axios from "axios";
-
-import ReactDOM from "react-dom";
-
-function trackSearch() {}
 
 export const SearchPage = (props) => {
   const handleSubmit = (e) => {
@@ -31,30 +22,35 @@ export const SearchPage = (props) => {
 
   const trackInput = TrackNameInput;
 
-  // axios
-  //   .get(`/open/tracks=${trackInput}`)
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     let idObject = [];
-  //     let i = 0;
+  axios
+    .get(`http://localhost:8000/api/open/tracks?trackTitle=${trackInput}`)
+    // .then((res) => res.json())
+    .then((data) => {
+      let idObject = [];
+      let i = 0;
 
-  //     Object.keys(data).forEach((key) => {
-  //       idObject[i] = data[key];
-  //       i++;
-  //     });
+      console.log(data);
 
-  //     for (let id of idObject) {
-  //       fetch(`/tracks/${id["track_id"]}`)
-  //         .then((res) => res.json())
-  //         .then((data) => {
-  //           const rowResults = document.createElement("tr");
-  //           rowResults.className = "resultsRows";
-  //         })
-  //         .catch((error) => {
-  //           console.error("There has been a error with fetch: ", error);
-  //         });
-  //     }
-  //   });
+      Object.keys(data).forEach((key) => {
+        idObject[i] = data[key];
+        i++;
+      });
+
+      console.log(idObject);
+
+      for (let id of idObject) {
+        axios
+          .get(`http://localhost:8000/api/open/tracks/${id["track_id"]}`)
+          .then((res) => res.json())
+          .then((data) => {
+            const rowResults = document.createElement("tr");
+            rowResults.className = "resultsRows";
+          })
+          .catch((error) => {
+            console.error("There has been a error with axios: ", error);
+          });
+      }
+    });
 
   return (
     <>
