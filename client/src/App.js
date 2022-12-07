@@ -16,6 +16,7 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/SearchPage" element={<SearchPage />} />
       <Route path="/SearchResults" element={<SearchResults />} />
+      {/* <Route path="/track/:id" element={<ViewSingleTrack />} /> */}
       {/* <Route path="/Script" element={<Script />} /> */}
     </Routes>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeaderAccount from "../components/HeaderAccount";
 import styles from "./SearchResults.module.css";
 import AccountButton from "../components/AccountButton";
@@ -6,11 +6,54 @@ import ChangeButton from "../components/ChangeButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import EmailBox from "../components/EmailBox";
 import PasswordBox from "../components/PasswordBox";
+import axios from "axios";
+import TrackCard from "../components/TrackCard";
+import { useLocation } from 'react-router-dom';
 
 export const SearchResults = (props) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+
+  const search = useLocation().search;
+  let trackNameInput = new URLSearchParams(search).get('trackTitle');
+  let artistInput = new URLSearchParams(search).get('artist');
+  let genreInput = new URLSearchParams(search).get('genreName');
+
+  const [trackList, setTrackList] = useState({
+    tracks: []
+  });
+
+  useEffect(()=>{
+    axios
+    .get(`http://localhost:8000/api/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`)
+    .then(res => {
+      let data = res.data;
+
+      setTrackList({
+        tracks: res.data,
+      });
+
+      // let idObject = [];
+      // let i = 0;
+
+      // Object.keys(data).forEach((key) => {
+      //   idObject[i] = data[key];
+      //   i++;
+      // });
+
+      // for (let id of idObject) {
+      //   axios
+      //     .get(`http://localhost:8000/api/open/tracks/${id["track_id"]}`)
+      //     .then(res => {
+      //       const rowResults = document.createElement("tr");
+      //       rowResults.className = "resultsRows";
+      //     })
+      //     .catch((error) => {
+      //       console.error("There has been a error with axios: ", error);
+      //     });
+      // }
+    });
+  }, []);
+
+  const trackPropList = trackList.tracks.map(t => <TrackCard track={t} key={t.track_id}/>)
 
   return (
     <>
@@ -22,26 +65,9 @@ export const SearchResults = (props) => {
           <div className={styles.Title}>Search Results</div>
 
           <div className={styles.InsideDiv}>
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
-            <EmailBox />
+            <div>
+              {trackPropList}
+            </div>
           </div>
         </div>
 
