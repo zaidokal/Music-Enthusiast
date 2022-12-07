@@ -6,6 +6,7 @@ import { Login } from "./views/Login";
 import { Register } from "./views/Register";
 import { SearchPage } from "./views/SearchPage";
 import { SearchResults } from "./views/SearchResults";
+import { Script } from "./views/Script";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/SearchPage" element={<SearchPage />} />
       <Route path="/SearchResults" element={<SearchResults />} />
+      {/* <Route path="/Script" element={<Script />} /> */}
     </Routes>
   );
 };
