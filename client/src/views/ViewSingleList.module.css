@@ -1,0 +1,30 @@
+.ListDetails {
+  width: 500px;
+
+  border-color: rgb(255, 0, 0);
+  background-color: rgba(5, 5, 5, 0.425);
+
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+
+  height: auto;
+
+  padding: 4vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
