@@ -7,7 +7,7 @@ const ListCard = (props) => {
   let playList = props.playList;
 
   return (
-    <Link to={`/tracks/${playList.listName}`}>
+    <Link to={`/lists/${playList.listName}`}>
       <button className={styles.PlaylistInfoButton}>
         <div className={styles.ListName}>
           Playlist Name: {playList.listName}

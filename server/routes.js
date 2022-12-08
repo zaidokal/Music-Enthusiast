@@ -414,6 +414,8 @@ router.get("/open/lists", async (req, res) => {
           playtime: convertedPlaytime,
           average_rating: avgRating,
         });
+
+        console.log(results);
       } else {
         console.log("Error in getting lists");
       }

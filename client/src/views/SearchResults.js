@@ -40,7 +40,7 @@ export const SearchResults = (props) => {
       });
     
     axios.get('http://localhost:8000/api/open/lists').then(res => {
-      setPlayList(playlistList);
+      setPlayList(res.data);
     })
   }, []);
 
