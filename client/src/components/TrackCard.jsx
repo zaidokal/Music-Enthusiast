@@ -6,7 +6,7 @@ const TrackCard = (props) => {
   let track = props.track;
 
   return (
-    <Link to={`/tracks/${track.track_id}`}>
+    <Link to={`/${track.track_id}`}>
       <button className={styles.TrackInfoButton}>
         <div className={styles.TrackTitle}>Track: {track.track_title}</div>
         <div className={styles.ArtistName}>Artist: {track.artist_name}</div>
