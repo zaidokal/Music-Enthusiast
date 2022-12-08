@@ -4,6 +4,7 @@ import styles from "./SearchResults.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
 import TrackCard from "../components/TrackCard";
+import ListCard from "../components/ListCard";
 import { useLocation } from "react-router-dom";
 
 export const SearchResults = (props) => {
@@ -13,6 +14,7 @@ export const SearchResults = (props) => {
   let genreInput = new URLSearchParams(search).get("genreName");
 
   const [trackList, setTrackList] = useState([]);
+  const [playlistList, setPlayList] = useState([]);
 
   useEffect(() => {
     axios
@@ -36,10 +38,18 @@ export const SearchResults = (props) => {
           setTrackList(completedTracks)
         );
       });
+    
+    axios.get('http://localhost:8000/api/open/lists').then(res => {
+      setPlayList(playlistList);
+    })
   }, []);
 
   const trackPropList = trackList.map((track) => (
     <TrackCard track={track} key={track.track_id} />
+  ));
+
+  const playListPropList = playlistList.map((pl) => (
+    <ListCard playList={pl} key={pl.listName} />
   ));
 
   return (
@@ -59,7 +69,9 @@ export const SearchResults = (props) => {
         <div className={styles.OuterDiv}>
           <div className={styles.Title}>Some playlists you might like</div>
 
-          <div className={styles.InsideDiv}></div>
+          <div className={styles.InsideDiv}>
+            <div>{playListPropList}</div>
+          </div>
         </div>
       </div>
     </>
