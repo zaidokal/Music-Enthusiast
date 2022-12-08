@@ -5,7 +5,9 @@
   padding-top: 80px;
   padding-bottom: 100px;
   border-color: rgb(255, 0, 0);
-  background-color: rgba(5, 5, 5, 0.425);
+  background-color: #161a1d;
+
+  border-radius: 15px;
 
   margin: 0;
   position: absolute;
@@ -25,21 +27,36 @@
 }
 
 .EmailBox {
-  border-radius: 200px;
+  border-radius: 10px;
   height: 50px;
   width: 300px;
   padding-left: 15px;
   font-size: 20px;
   padding-bottom: 20p;
   margin: 10px 0px;
+  outline: none;
+  background-color: #d3d3d3;
+  font-family: Asap-Condensed-Regular;
+  transition: 0.3s;
 }
 
 .PasswordBox {
-  border-radius: 200px;
+  border-radius: 10px;
   height: 50px;
   width: 300px;
   padding-left: 15px;
   font-size: 20px;
   margin: 10px 0px;
+  outline: none;
+  background-color: #d3d3d3;
+  font-family: Asap-Condensed-Regular;
+  transition: 0.3s;
 }
 
+.EmailBox:hover {
+  background-color: #f5f3f4;
+}
+
+.PasswordBox:hover {
+  background-color: #f5f3f4;
+}
