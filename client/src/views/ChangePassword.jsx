@@ -7,7 +7,7 @@ import BackgroundOpacity from "../components/BackgroundOpacity";
 import SearchButton from "../components/SearchButton";
 import axios from "axios";
 
-export const Login = (props) => {
+export const ChangePassword = (props) => {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
@@ -55,19 +55,30 @@ export const Login = (props) => {
             type="password"
             name="password"
             value={userInput.password}
-            placeholder="Password"
+            placeholder="Current Password"
+            onChange={handleChange}
+          />
+          <input
+            className={styles.PasswordBox}
+            type="password"
+            name="password"
+            value={userInput.password}
+            placeholder="New Password"
             onChange={handleChange}
           />
           <div className={styles.AccountButton}>
             <AccountButton
-              text={"Login"}
+              text={"Change Password"}
               linkTo={"/SearchPage"}
               onClick={handleSubmit}
             />
           </div>
         </form>
 
-        <ChangeButton text={"Update Password?"} linkTo={"/ChangePassword"} />
+        <ChangeButton
+          text={"Click here to go back to the login page."}
+          linkTo={"/login"}
+        />
 
         <ChangeButton
           text={"Don't have an account? Register here."}
