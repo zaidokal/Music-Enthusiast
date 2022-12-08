@@ -106,6 +106,7 @@ router.get("/artists", (req, res) => {
 });
 
 // ----- Authentication ----- api/auth ? -
+
 // POST reqeust to create account
 router.post("/auth/accounts", async (req, res) => {
   let user = await storage.getItem(req.body.email);
@@ -131,7 +132,7 @@ router.post("/auth/accounts", async (req, res) => {
           verificationToken: verificationToken,
         })
         .then(() => {
-          const verificationURL = `http://localhost:8080/api/auth/verify?token=${verificationToken}&email=${req.body.email}`;
+          const verificationURL = `http://localhost:8000/api/auth/verify?token=${verificationToken}&email=${req.body.email}`;
 
           const mailOptions = {
             from: "rakhshantest@gmail.com",
@@ -196,8 +197,18 @@ router.post("/auth/login", (req, res, next) => {
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        res.send("Successfully Authenticated");
-        console.log(req.user);
+        if (req.user.verified == true) {
+          res.send("Successfully Authenticated");
+          console.log(req.user);
+        } else if (req.user.verified == false) {
+          req.logout(function (err) {
+            if (err) {
+              return next(err);
+            }
+            res.send("Please verify your email.");
+            console.log(req.user);
+          });
+        }
       });
     }
   })(req, res, next);
@@ -310,7 +321,7 @@ router.get("/open/tracks", (req, res) => {
 });
 
 // GET Request for specific track
-// include youtube button stuff
+// Includes YouTube button stuff
 router.get("/open/tracks/:id", (req, res) => {
   if (!isNaN(req.params.id)) {
     res.send(
@@ -409,11 +420,13 @@ router.get("/open/lists/:name", async (req, res) => {
 });
 
 // ----- Authenticated Users ----- api/secure
+
 // POST Request to create playlist
 router.post(
   "/secure/lists",
   body("listName").not().isEmpty().trim().escape(),
   async (req, res) => {
+    console.log(req.user);
     if (req.isAuthenticated()) {
       let existingList = await storage.getItem(req.body.listName);
       if (existingList) {
@@ -422,7 +435,7 @@ router.post(
         storage.setItem(req.body.listName, {
           creator: req.body.username,
           tracks: req.body.tracks,
-          privateFlag: "private",
+          privateFlag: req.body.privateFlag,
           type: "list",
         });
         res.send("Successfully added list!");
@@ -553,29 +566,26 @@ router.delete("/secure/reviews/:name", async (req, res) => {
 });
 
 // ----- Admin ----- api/admin
+
 // PUT to modify site manager priveleges
 // PUT to modify deactivated status
-router.put(
-  "/admin/accounts/:email",
-  async (req, res) => {
-    if (req.isAuthenticated() && req.user.admin == true) {
-      let user = await storage.getItem(req.params.email);
-      if (!user) {
-        res.send("ERROR: An account with this email does not exist");
-      } else {
-        storage
-          .setItem(req.params.email, {
-            username: user.username,
-            password: user.password,
-            deactivated: req.params.deactivated,
-            admin: req.params.admin,
-            verified: user.verified,
-            verificationToken: user.verificationToken,
-          });
-      }
+router.put("/admin/accounts/:email", async (req, res) => {
+  if (req.isAuthenticated() && req.user.admin == true) {
+    let user = await storage.getItem(req.params.email);
+    if (!user) {
+      res.send("ERROR: An account with this email does not exist");
+    } else {
+      storage.setItem(req.params.email, {
+        username: user.username,
+        password: user.password,
+        deactivated: req.params.deactivated,
+        admin: req.params.admin,
+        verified: user.verified,
+        verificationToken: user.verificationToken,
+      });
     }
   }
-);
+});
 
 // PUT to modify review hidden status
 router.put(

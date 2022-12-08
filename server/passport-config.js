@@ -21,7 +21,9 @@ function initialize(passport, db) {
                 username: user.username,
                 password: user.password,
                 deactivated: user.deactivated,
-                admin: user.admin
+                admin: user.admin,
+                verified: user.verified,
+                verificationToken: user.verificationToken,
               };
               return done(null, userObj);
             } else {
@@ -42,7 +44,7 @@ function initialize(passport, db) {
         username: userObj.username,
         password: userObj.password,
         deactivated: userObj.deactivated,
-        admin: userObj.admin
+        admin: userObj.admin,
       });
     });
   });
