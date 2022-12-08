@@ -23,7 +23,9 @@ const App = () => {
       <Route path="/lists">
         <Route path="/lists/:name" element={<ViewSingleList />} />
       </Route>
-      <Route path="/policies" element={<Policies />} />
+      <Route path="/policies" element={<Policies />} >
+        <Router path="/edit" element={<EditPolicies />} />
+      </Route>
       <Route path="/ChangePassword" element={<ChangePassword />} />
     </Routes>
   );
