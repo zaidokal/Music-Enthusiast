@@ -12,6 +12,7 @@ import { ChangePassword } from "./views/ChangePassword";
 import { Policies } from "./views/Policies";
 import { EditPolicies } from "./views/EditPolicies";
 import { CreateList } from "./views/CreateList";
+import { CreateReview } from "./views/CreateReview";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
       <Route path="/edit-policies" element={<EditPolicies />} />
       <Route path="/ChangePassword" element={<ChangePassword />} />
       <Route path="/CreateList" element={<CreateList />} />
+      <Route path="/CreateReview" element={<CreateReview />} />
     </Routes>
   );
 };
