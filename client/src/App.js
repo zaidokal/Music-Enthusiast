@@ -11,6 +11,8 @@ import { ViewSingleList } from "./views/ViewSingleList";
 import { ChangePassword } from "./views/ChangePassword";
 import { Policies } from "./views/Policies";
 import { EditPolicies } from "./views/EditPolicies";
+import { CreateList } from "./views/CreateList";
+
 const App = () => {
   return (
     <Routes>
@@ -26,6 +28,7 @@ const App = () => {
       <Route path="/policies" element={<Policies />} />
       <Route path="/edit-policies" element={<EditPolicies />} />
       <Route path="/ChangePassword" element={<ChangePassword />} />
+      <Route path="/CreateList" element={<CreateList />} />
     </Routes>
   );
 };
