@@ -11,27 +11,28 @@ export const Login = (props) => {
   const [userInput, setUserInput] = useState({
     email: "",
     password: "",
-  })
+  });
 
   const handleChange = (e) => {
     e.preventDefault();
-    setUserInput(prevState => {
-        return {
-            ...prevState,
-            [e.target.name]: e.target.value,
-        }
-    })
-  }
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        [e.target.name]: e.target.value,
+      };
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/auth/login', userInput)
-    .then(res => {
-      alert(res.data);
-    })
-    .catch(err => {
-      alert(err);
-    })
+    axios
+      .post("http://localhost:8000/api/auth/login", userInput)
+      .then((res) => {
+        alert(res.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   };
 
   return (
@@ -41,12 +42,32 @@ export const Login = (props) => {
 
       <div className={styles.MainDiv}>
         <form onSubmit={handleSubmit}>
-          <input className={styles.EmailBox} type="email" name="email" value={userInput.email} placeholder="Email" onChange={handleChange} />
-          <input className={styles.PasswordBox} type="password" name="password" value={userInput.password} placeholder="Password" onChange={handleChange} />
+          <input
+            className={styles.EmailBox}
+            type="email"
+            name="email"
+            value={userInput.email}
+            placeholder="Email"
+            onChange={handleChange}
+          />
+          <input
+            className={styles.PasswordBox}
+            type="password"
+            name="password"
+            value={userInput.password}
+            placeholder="Password"
+            onChange={handleChange}
+          />
           <div className={styles.AccountButton}>
-            <AccountButton text={"Login"} linkTo={"/SearchPage"} onClick={handleSubmit}/>
+            <AccountButton
+              text={"Login"}
+              linkTo={"/SearchPage"}
+              onClick={handleSubmit}
+            />
           </div>
         </form>
+
+        <ChangeButton text={"Update Password?"} linkTo={"/ChangePassword"} />
 
         <ChangeButton
           text={"Don't have an account? Register here."}
