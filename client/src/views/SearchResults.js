@@ -6,6 +6,7 @@ import axios from "axios";
 import TrackCard from "../components/TrackCard";
 import ListCard from "../components/ListCard";
 import { useLocation } from "react-router-dom";
+import GenericButton from "../components/GenericButton";
 
 export const SearchResults = (props) => {
   const search = useLocation().search;
@@ -38,10 +39,10 @@ export const SearchResults = (props) => {
           setTrackList(completedTracks)
         );
       });
-    
-    axios.get('http://localhost:8000/api/open/lists').then(res => {
+
+    axios.get("http://localhost:8000/api/open/lists").then((res) => {
       setPlayList(res.data);
-    })
+    });
   }, []);
 
   const trackPropList = trackList.map((track) => (
@@ -74,6 +75,8 @@ export const SearchResults = (props) => {
           </div>
         </div>
       </div>
+
+      <GenericButton text={"Create / Edit List"} linkTo={`/CreateList`} />
     </>
   );
 };
