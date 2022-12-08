@@ -12,7 +12,7 @@ export const ViewSingleList = (props) => {
 
     useEffect(() => {
         axios
-        .get(`http://localhost:8000/open/lists/${name}`)
+        .get(`http://localhost:8000/api/open/lists/${name}`)
         .then((res) => {
             setListInfo(res.data);
         })
