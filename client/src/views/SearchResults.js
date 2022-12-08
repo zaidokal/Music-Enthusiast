@@ -13,6 +13,7 @@ export const SearchResults = (props) => {
   let genreInput = new URLSearchParams(search).get("genreName");
 
   const [trackList, setTrackList] = useState([]);
+  const [playlistList, setPlayList] = useState([]);
 
   useEffect(() => {
     axios
@@ -36,6 +37,10 @@ export const SearchResults = (props) => {
           setTrackList(completedTracks)
         );
       });
+    
+    axios.get('http://localhost:8000/api/open/lists').then(res => {
+      setPlayList(playlistList);
+    })
   }, []);
 
   const trackPropList = trackList.map((track) => (
@@ -59,7 +64,9 @@ export const SearchResults = (props) => {
         <div className={styles.OuterDiv}>
           <div className={styles.Title}>Some playlists you might like</div>
 
-          <div className={styles.InsideDiv}></div>
+          <div className={styles.InsideDiv}>
+            <div>{playlistList}</div>
+          </div>
         </div>
       </div>
     </>
