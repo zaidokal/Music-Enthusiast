@@ -73,7 +73,7 @@ export const CreateList = (props) => {
           <GenericButton
             text={"Submit"}
             linkTo={`/SearchPage`}
-            onClick={handleClick}
+            onClick={handleSubmit}
           />
         </form>
       </div>
