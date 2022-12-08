@@ -7,6 +7,7 @@ import { Register } from "./views/Register";
 import { SearchPage } from "./views/SearchPage";
 import { SearchResults } from "./views/SearchResults";
 import { ViewSingleTrack } from "./views/ViewSingleTrack";
+import { ViewSingleList } from "./views/ViewSingleList";
 import { Script } from "./views/Script";
 
 const App = () => {
@@ -18,6 +19,9 @@ const App = () => {
       <Route path="/SearchPage" element={<SearchPage />} />
       <Route path="/SearchResults" element={<SearchResults />} />
       <Route path="/:id" element={<ViewSingleTrack />} />
+      <Route path="/lists">
+        <Route path="/lists/:name" element={<ViewSingleList/>} />
+      </Route>
       {/* <Route path="/Script" element={<Script />} /> */}
     </Routes>
   );
