@@ -8,6 +8,7 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const nodemailer = require("nodemailer");
+const Validator = require("validatorjs");
 
 // Initialize database.
 const storage = require("node-persist");
@@ -107,7 +108,7 @@ router.get("/artists", (req, res) => {
 
 // ----- Authentication ----- api/auth ? -
 
-// POST reqeust to create account
+// POST request to create account
 router.post("/auth/accounts", async (req, res) => {
   let user = await storage.getItem(req.body.email);
 
@@ -119,36 +120,52 @@ router.post("/auth/accounts", async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
+    let data = {
+      email: req.body.email,
+    };
+
+    let rules = {
+      email: "email",
+    };
+
+    let validation = new Validator(data, rules);
+
     if (user) {
-      res.send("ERROR: An account with this email already exists");
+      res.send("An account with this email already exists.");
     } else {
-      storage
-        .setItem(req.body.email, {
-          username: req.body.username,
-          password: hashedPassword,
-          deactivated: false,
-          admin: false,
-          verified: false,
-          verificationToken: verificationToken,
-        })
-        .then(() => {
-          const verificationURL = `http://localhost:8000/api/auth/verify?token=${verificationToken}&email=${req.body.email}`;
+      if (validation.passes()) {
+        storage
+          .setItem(req.body.email, {
+            username: req.body.username,
+            password: hashedPassword,
+            deactivated: false,
+            admin: false,
+            verified: false,
+            verificationToken: verificationToken,
+          })
+          .then(() => {
+            const verificationURL = `http://localhost:8000/api/auth/verify?token=${verificationToken}&email=${req.body.email}`;
 
-          const mailOptions = {
-            from: "rakhshantest@gmail.com",
-            to: req.body.email,
-            subject: "SRZ Music Verification",
-            text: `Please click this link to verify your email: ${verificationURL}`,
-          };
+            const mailOptions = {
+              from: "rakhshantest@gmail.com",
+              to: req.body.email,
+              subject: "SRZ Music Verification",
+              text: `Please click this link to verify your email: ${verificationURL}`,
+            };
 
-          transport.sendMail(mailOptions, (err) => {
-            if (err) {
-              res.status(500).send("Error sending verification email.");
-            } else {
-              res.status(200).send("Verification email sent");
-            }
+            transport.sendMail(mailOptions, (err) => {
+              if (err) {
+                res.status(500).send("Error sending verification email.");
+              } else {
+                res
+                  .status(200)
+                  .send("Please check your email to verify your account.");
+              }
+            });
           });
-        });
+      } else {
+        res.send("Please enter a valid email");
+      }
     }
   } catch {
     res.status(500).send("Error saving user to database.");
@@ -193,7 +210,7 @@ router.get("/auth/email-confirmation", (req, res) => {
 router.post("/auth/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
-    if (!user) res.send("No User Exists");
+    if (!user) res.send("Incorrect email or password.");
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
@@ -426,7 +443,6 @@ router.post(
   "/secure/lists",
   body("listName").not().isEmpty().trim().escape(),
   async (req, res) => {
-    console.log(req.user);
     if (req.isAuthenticated()) {
       let existingList = await storage.getItem(req.body.listName);
       if (existingList) {
