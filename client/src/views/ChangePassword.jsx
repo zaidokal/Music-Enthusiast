@@ -55,19 +55,30 @@ export const ChangePassword = (props) => {
             type="password"
             name="password"
             value={userInput.password}
-            placeholder="Password"
+            placeholder="Current Password"
+            onChange={handleChange}
+          />
+          <input
+            className={styles.PasswordBox}
+            type="password"
+            name="password"
+            value={userInput.password}
+            placeholder="New Password"
             onChange={handleChange}
           />
           <div className={styles.AccountButton}>
             <AccountButton
-              text={"Login"}
+              text={"Change Password"}
               linkTo={"/SearchPage"}
               onClick={handleSubmit}
             />
           </div>
         </form>
 
-        <ChangeButton text={"Change Password?"} linkTo={"/register"} />
+        <ChangeButton
+          text={"Click here to go back to the login page."}
+          linkTo={"/login"}
+        />
 
         <ChangeButton
           text={"Don't have an account? Register here."}
