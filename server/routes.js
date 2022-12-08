@@ -639,6 +639,7 @@ router.put("/admin/policies", async (req, res) => {
       dmca: req.body.dmca,
       aup: req.body.aup,
     });
+    res.send("Successfully created/updated policies");
   } else {
     res.send("No permissions.");
   }

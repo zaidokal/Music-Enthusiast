@@ -4,6 +4,7 @@ import "./HomePage.module.css";
 import Header from "../components/Header";
 import styles from "./HomePage.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
+import GenericButton from "../components/GenericButton";
 
 const HomePage = () => {
   return (
@@ -36,9 +37,8 @@ const HomePage = () => {
           </div>
         </div>
         <div className={styles.LegalMessageDiv}>
-          <label className={styles.LegalMessage} htmlFor="LegalMessage">
-            Copyright, Privacy, and Acceptable Use
-          </label>
+          <label className={styles.LegalMessage} htmlFor="LegalMessage"></label>
+          <GenericButton text={"Copyright, Privacy, and Acceptable Use"} linkTo={'/policies'}></GenericButton>
         </div>
       </div>
     </>

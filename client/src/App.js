@@ -9,6 +9,7 @@ import { SearchResults } from "./views/SearchResults";
 import { ViewSingleTrack } from "./views/ViewSingleTrack";
 import { ViewSingleList } from "./views/ViewSingleList";
 import { ChangePassword } from "./views/ChangePassword";
+import { Policies } from "./views/Policies";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
       <Route path="/lists">
         <Route path="/lists/:name" element={<ViewSingleList />} />
       </Route>
+      <Route path="/policies" element={<Policies />} />
       <Route path="/ChangePassword" element={<ChangePassword />} />
     </Routes>
   );

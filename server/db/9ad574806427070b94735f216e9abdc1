@@ -4,7 +4,7 @@
     "username": "testuser",
     "password": "$2b$10$S1ihk9nh4D5ZRYdyEXk5XeFS1/uGOaSxzuoAWY9Blw0G6N2hZA/oO",
     "deactivated": false,
-    "admin": false,
+    "admin": true,
     "verified": true,
     "verificationToken": "2bb6c86e7e3bd2000000"
   }
