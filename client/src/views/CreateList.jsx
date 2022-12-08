@@ -3,6 +3,7 @@ import BackgroundOpacity from "../components/BackgroundOpacity";
 import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
 import styles from "./CreateList.module.css";
+import axios from "axios";
 
 export const CreateList = (props) => {
 
@@ -71,7 +72,7 @@ export const CreateList = (props) => {
 
           <GenericButton
             text={"Submit"}
-            linkTo={`/SearchResults?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`}
+            linkTo={`/SearchPage`}
             onClick={handleClick}
           />
         </form>
