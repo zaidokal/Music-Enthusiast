@@ -1,33 +1,53 @@
 import React, { useEffect, useState } from "react";
 import HeaderAccount from "../components/HeaderAccount";
-import styles from "./SearchResults.module.css";
+import styles from "./ViewSingleList.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
 export const ViewSingleList = (props) => {
+  const { name } = useParams();
 
-    const { name } = useParams();
+  const [listInfo, setListInfo] = useState({});
 
-    const [listInfo, setListInfo] = useState({});
-
-    useEffect(() => {
-        axios
-        .get(`http://localhost:8000/api/open/lists/${name}`)
-        .then((res) => {
-            setListInfo(res.data);
-        })
-        .catch((error) => {
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8000/api/open/lists/${name}`)
+      .then((res) => {
+        setListInfo(res.data);
+      })
+      .catch((error) => {
         console.error("There has been a error with axios: ", error);
-        })
-    }, []);
-    
-    let string = JSON.stringify(listInfo[0]);
-    return (
-        <>
-            <HeaderAccount />
-            <div>
-                {string}
-            </div>
-        </>
-    );
+      });
+  }, []);
+
+  let creator = listInfo[0] && listInfo[0]["creator"];
+
+  let tracks = listInfo[0] && listInfo[0]["tracks"];
+
+  let privateFlag = listInfo[0] && listInfo[0]["privateFlag"];
+
+  let type = listInfo[0] && listInfo[0]["type"];
+
+  return (
+    <>
+      <HeaderAccount />
+
+      <div className={styles.ListDetails}>
+        <div>Creator: {creator}</div>
+        <div>Status: {privateFlag}</div>
+        <div>Type: {type}</div>
+
+        <div className={styles.TracksList}>
+          {"Tracks: "}
+          {listInfo[0] && listInfo[0]["tracks"] && (
+            <ul>
+              {tracks.map((track) => (
+                <li>{track}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </>
+  );
 };
