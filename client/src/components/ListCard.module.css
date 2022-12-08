@@ -1,0 +1,28 @@
+.PlaylistInfoButton {
+  margin: 1vh;
+  width: 100%;
+  padding: 5px;
+  background-color: rgba(226, 215, 215, 0.897);
+}
+
+.ListName {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.Creator {
+  font-size: 13px;
+}
+
+.Tracks {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.Playtime {
+  font-size: 10px;
+}
+
+.AverageRating {
+  font-size: 10px;
+}
