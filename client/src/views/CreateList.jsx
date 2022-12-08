@@ -5,18 +5,32 @@ import Header from "../components/Header";
 import styles from "./CreateList.module.css";
 
 export const CreateList = (props) => {
+
+  const [userInput, setUserInput] = useState({
+    listNameInput: "",
+    userNameInput: "",
+    trackInput: "",
+  })
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setUserInput(prevState => {
+        return {
+            ...prevState,
+            [e.target.name]: e.target.value,
+        }
+    })
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-  };
-
-  const [trackNameInput, setTrackNameInput] = useState("");
-  const [artistInput, setArtistInput] = useState("");
-  const [genreInput, setGenreInput] = useState("");
-
-  const handleClick = () => {
-    console.log(trackNameInput);
-    console.log(artistInput);
-    console.log(genreInput);
+    axios.post('http://localhost:8000/api/secure/lists', userInput)
+    .then(res => {
+      alert(res.data);
+    })
+    .catch(err => {
+      alert(err);
+    })
   };
 
   return (
@@ -32,24 +46,27 @@ export const CreateList = (props) => {
             className={styles.TextBox}
             type="string"
             placeholder="List Name"
-            value={trackNameInput}
-            onChange={(e) => setTrackNameInput(e.target.value)}
+            name="listNameInput"
+            value={userInput.listNameInput}
+            onChange={handleChange}
           ></input>
 
           <input
             className={styles.TextBox}
             type="string"
             placeholder="Username"
-            value={artistInput}
-            onChange={(e) => setArtistInput(e.target.value)}
+            name="userNameInput"
+            value={userInput.userNameInput}
+            onChange={handleChange}
           ></input>
 
           <input
             className={styles.TextBox}
             type="string"
             placeholder="Tracks"
-            value={genreInput}
-            onChange={(e) => setGenreInput(e.target.value)}
+            name="trackInput"
+            value={userInput.trackInput}
+            onChange={handleChange}
           ></input>
 
           <GenericButton
