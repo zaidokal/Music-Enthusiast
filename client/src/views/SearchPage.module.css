@@ -5,7 +5,9 @@
   padding-top: 80px;
   padding-bottom: 100px;
   border-color: rgb(255, 0, 0);
-  background-color: rgba(5, 5, 5, 0.425);
+  background-color: #161a1d;
+
+  border-radius: 15px;
 
   margin: 0;
   position: absolute;
@@ -13,6 +15,7 @@
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+  font-family: Asap-Condensed-Regular;
 }
 
 .AccountButton {
@@ -20,17 +23,24 @@
   margin-right: auto;
   margin-top: 20px;
   margin-bottom: 20px;
-
+  /* border-radius: 10px; */
   width: 50%;
 }
 
 .TextBox {
-  border-radius: 200px;
+  border-radius: 10px;
   height: 50px;
   width: 300px;
   padding-left: 15px;
   font-size: 20px;
-  padding-bottom: 20p;
   margin: 10px 0px;
   align-items: center;
+  outline: none;
+  background-color: #d3d3d3;
+  font-family: Asap-Condensed-Regular;
+  transition: 0.3s;
+}
+
+.TextBox:hover {
+  background-color: #f5f3f4;
 }
