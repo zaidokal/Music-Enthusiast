@@ -5,6 +5,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ChangeButton from "../components/ChangeButton";
 import GenericButton from "../components/GenericButton";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const ViewSingleTrack = (props) => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export const ViewSingleTrack = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/open/tracks/${id}`)
+      .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/tracks/${id}`)
       .then((res) => {
         setTrackInfo(res.data);
       })
