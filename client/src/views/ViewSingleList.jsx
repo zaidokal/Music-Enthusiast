@@ -3,6 +3,7 @@ import HeaderAccount from "../components/HeaderAccount";
 import styles from "./ViewSingleList.module.css";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const ViewSingleList = (props) => {
   const { name } = useParams();
@@ -11,7 +12,7 @@ export const ViewSingleList = (props) => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/open/lists/${name}`)
+      .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/lists/${name}`)
       .then((res) => {
         setListInfo(res.data);
       })

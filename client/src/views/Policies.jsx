@@ -3,12 +3,13 @@ import HeaderAccount from "../components/HeaderAccount";
 import styles from "./Policies.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const Policies = () => {
   const [policies, setPolicies] = useState({});
 
   useEffect(() => {
-    axios.get("http://localhost:8000/api/open/policies").then((res) => {
+    axios.get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/policies`).then((res) => {
       setPolicies(res.data);
     });
   }, []);

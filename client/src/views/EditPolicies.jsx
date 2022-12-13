@@ -4,6 +4,7 @@ import styles from "./EditPolicies.module.css";
 import AccountButton from "../components/AccountButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const EditPolicies = () => {
 
@@ -25,7 +26,7 @@ export const EditPolicies = () => {
   
     const handleSubmit = (e) => {
       e.preventDefault();
-      axios.post('http://localhost:8000/api/admin/policies', userInput)
+      axios.post(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/admin/policies`, userInput)
       .then(res => {
         alert(res.data);
       })

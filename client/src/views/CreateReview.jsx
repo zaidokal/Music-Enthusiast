@@ -4,6 +4,7 @@ import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
 import styles from "./CreateList.module.css";
 import axios from "axios";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const CreateReview = (props) => {
   const [userInput, setUserInput] = useState({
@@ -25,7 +26,7 @@ export const CreateReview = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/secure/lists", userInput)
+      .post(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/secure/lists`, userInput)
       .then((res) => {
         alert(res.data);
       })

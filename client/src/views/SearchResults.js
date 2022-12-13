@@ -7,6 +7,7 @@ import TrackCard from "../components/TrackCard";
 import ListCard from "../components/ListCard";
 import { useLocation } from "react-router-dom";
 import GenericButton from "../components/GenericButton";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const SearchResults = (props) => {
   const search = useLocation().search;
@@ -20,12 +21,12 @@ export const SearchResults = (props) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:8000/api/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`
+        `http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`
       )
       .then((res) => {
         const tracks = res.data.map((t) =>
           axios
-            .get(`http://localhost:8000/api/open/tracks/${t.track_id}`)
+            .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/tracks/${t.track_id}`)
             .then((res) => {
               res.data[0].track_id = t.track_id;
               return res.data[0];
@@ -40,7 +41,7 @@ export const SearchResults = (props) => {
         );
       });
 
-    axios.get("http://localhost:8000/api/open/lists").then((res) => {
+    axios.get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/lists`).then((res) => {
       setPlayList(res.data);
     });
   }, []);

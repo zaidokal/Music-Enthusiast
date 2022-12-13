@@ -6,6 +6,7 @@ import ChangeButton from "../components/ChangeButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import SearchButton from "../components/SearchButton";
 import axios from "axios";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const ChangePassword = (props) => {
   const [userInput, setUserInput] = useState({
@@ -26,7 +27,7 @@ export const ChangePassword = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/auth/login", userInput)
+      .post(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/login`, userInput)
       .then((res) => {
         alert(res.data);
       })

@@ -6,6 +6,7 @@ import AccountButton from "../components/AccountButton";
 import ChangeButton from "../components/ChangeButton";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
+import {REACT_APP_IP, REACT_APP_PORT} from "../config";
 
 export const Register = (props) => {
 
@@ -27,7 +28,7 @@ export const Register = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8000/api/auth/accounts', userInput)
+    axios.post(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/accounts`, userInput)
     .then(res => {
       alert(res.data);
     })
