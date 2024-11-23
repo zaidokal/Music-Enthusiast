@@ -1,46 +1,87 @@
 .MainDiv {
-  width: 500px;
-
-  padding-left: 110px;
-  padding-top: 80px;
-  padding-bottom: 100px;
-  border-color: rgb(255, 0, 0);
-  background-color: #161a1d;
-
+  width: 90%;
+  max-width: 600px;
+  padding: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
-
-  margin: 0;
+  background-color: rgba(20, 20, 20, 0.9);
+  color: white;
+  margin: auto;
   position: absolute;
   top: 50%;
   left: 50%;
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  font-family: Asap-Condensed-Regular;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
-.AccountButton {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
+.Title {
+  text-align: center;
   margin-bottom: 20px;
-  /* border-radius: 10px; */
-  width: 50%;
+  font-size: 1.8rem;
+  color: #ff4757;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.InputContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.Label {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #ddd;
 }
 
 .TextBox {
-  border-radius: 10px;
-  height: 50px;
-  width: 300px;
-  padding-left: 15px;
-  font-size: 20px;
-  margin: 10px 0px;
-  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 1rem;
   outline: none;
-  background-color: #d3d3d3;
-  font-family: Asap-Condensed-Regular;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
-.TextBox:hover {
-  background-color: #f5f3f4;
+.TextBox:focus {
+  border-color: #ff4757;
+  box-shadow: 0 0 8px #ff4757;
+}
+
+.ErrorInput {
+  border-color: #ff4757;
+}
+
+.ErrorText {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #ff4757;
+}
+
+.SubmitButton {
+  width: fit-content;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background-color: #4caf50;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.SubmitButton:hover {
+  background-color: #ff4757;
+  box-shadow: 0 4px 10px rgba(102, 187, 106, 0.5);
 }

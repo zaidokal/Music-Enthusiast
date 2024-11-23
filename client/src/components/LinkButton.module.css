@@ -1,0 +1,21 @@
+.Button {
+  background-color: #fd010175;
+  border-color: #a4161a;
+  font-family: Azeret-Mono-Regular;
+  color: #d3d3d3;
+  position: relative;
+  font-size: 20px;
+  border-radius: 15px;
+  width: 200px;
+  height: 60px;
+  border-color: transparent;
+  transition: 0.3s;
+  margin: 10px;
+}
+
+.Button:hover {
+  cursor: pointer;
+
+  box-shadow: rgba(211, 211, 211, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+}

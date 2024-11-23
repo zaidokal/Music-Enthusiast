@@ -1,25 +1,22 @@
-// if (process.env.NODE_ENV !== "production") {
-//   require("dotenv").config();
-// }
 const express = require("express");
-const routes = require("./routes");
-const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Allow CORS for specific origin
+app.use(
+  cors({
+    origin: "http://localhost:3000", // Replace with production URL when deployed
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, // Allows cookies or session data
+  })
+);
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
+// Other middleware and routes
+app.use(express.json());
+app.use("/api/auth", require("./routes"));
+
+const PORT = 8000;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
-
-app.use("/", express.static("public"));
-app.use("/api", routes);
-
-// Define port and start server
-const port = 8000;
-app.listen(port, () => console.log(`Server running on port ${port}`));

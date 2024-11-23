@@ -13,6 +13,7 @@ import { Policies } from "./views/Policies";
 import { EditPolicies } from "./views/EditPolicies";
 import { CreateList } from "./views/CreateList";
 import { CreateReview } from "./views/CreateReview";
+import { Lists } from "./views/Lists";
 
 const App = () => {
   return (
@@ -23,6 +24,8 @@ const App = () => {
       <Route path="/SearchPage" element={<SearchPage />} />
       <Route path="/SearchResults" element={<SearchResults />} />
       <Route path="/:id" element={<ViewSingleTrack />} />
+      <Route path="/Lists" element={<Lists />} />
+
       <Route path="/lists">
         <Route path="/lists/:name" element={<ViewSingleList />} />
       </Route>

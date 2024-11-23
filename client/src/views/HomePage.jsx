@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import styles from "./HomePage.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import GenericButton from "../components/GenericButton";
+import LinkButton from "../components/LinkButton";
 
 const HomePage = () => {
   return (
@@ -14,13 +15,13 @@ const HomePage = () => {
         <BackgroundOpacity />
 
         <div
-          className={styles.BackgroundImage}
           style={{
-            backgroundImage: `url(${Image})`,
+            backgroundImage: `url(/images/Image.jpg)`,
             backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
-            height: 600,
-            width: 600,
+            backgroundSize: "cover",
+            backgroundImage: `url(/images/Image.jpg)`,
+            width: "100%",
+            height: "100%",
           }}
         >
           <div className={styles.MainDiv}>
@@ -36,9 +37,20 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+
+        {/* <div className={styles.ButtonDiv}>
+          <LinkButton linkTo={"/SearchPage"} text={"Search Page"} />
+          <LinkButton linkTo={"/Lists"} text={"Lists"} />{" "}
+          <LinkButton linkTo={"/CreateList"} text={"CreateList"} />{" "}
+          <LinkButton linkTo={"/CreateReview"} text={"CreateReview"} />
+        </div> */}
+
         <div className={styles.LegalMessageDiv}>
           <label className={styles.LegalMessage} htmlFor="LegalMessage"></label>
-          <GenericButton text={"Copyright, Privacy, and Acceptable Use"} linkTo={'/policies'}></GenericButton>
+          <GenericButton
+            text={"Copyright, Privacy, and Acceptable Use"}
+            linkTo={"/policies"}
+          ></GenericButton>
         </div>
       </div>
     </>

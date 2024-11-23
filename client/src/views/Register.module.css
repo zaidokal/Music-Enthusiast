@@ -1,84 +1,91 @@
-.MainDiv {
-  width: 500px;
-
-  padding-left: 110px;
-  padding-top: 80px;
-  padding-bottom: 100px;
-  border-color: rgb(255, 0, 0);
-  background-color: rgba(5, 5, 5, 0.425);
-
+body {
   margin: 0;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #161a1d, #1f2833);
+  color: #c5c6c7;
+}
+
+.MainDiv {
+  width: 90%;
+  max-width: 400px;
+  padding: 30px;
+  background-color: #0b0c10;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 50%;
   left: 50%;
-  -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
-  background-color: #161a1d;
-  border-radius: 15px;
+  text-align: center;
 }
 
-.DetailsDiv {
-  padding-left: 110px;
-  padding-top: 80px;
-  padding-bottom: 100px;
-  border-color: rgb(255, 0, 0);
-  background-color: rgba(5, 5, 5, 0.425);
-  width: 500px;
-}
-
-.AccountButton {
-  margin: 40px 90px;
-}
-
-.NameBox {
+input[type="email"],
+input[type="password"],
+input[name="username"] {
+  width: 100%;
+  padding: 15px;
+  margin: 15px 0;
   border-radius: 10px;
-  height: 50px;
-  width: 300px;
-  padding-left: 15px;
-  font-size: 20px;
-  padding-bottom: 20p;
-  margin: 10px 0px;
+  border: none;
+  font-size: 16px;
   outline: none;
-  background-color: #d3d3d3;
-  font-family: Asap-Condensed-Regular;
-  transition: 0.3s;
+  background-color: #1f2833;
+  color: #c5c6c7;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.EmailBox {
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[name="username"]:hover {
+  background-color: #c5c6c7;
+  color: #1f2833;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[name="username"]:focus {
+  box-shadow: 0 0 5px 2px #66fcf1;
+  background-color: #c5c6c7;
+  color: #1f2833;
+}
+
+.AccountButton button {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #0b0c10;
+  background: linear-gradient(135deg, #45a29e, #66fcf1);
+  border: none;
   border-radius: 10px;
-  height: 50px;
-  width: 300px;
-  padding-left: 15px;
-  font-size: 20px;
-  padding-bottom: 20p;
-  margin: 10px 0px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s;
+}
+
+.AccountButton button:hover {
+  background: linear-gradient(135deg, #66fcf1, #45a29e);
+  transform: scale(1.02);
+}
+
+.AccountButton button:focus {
   outline: none;
-  background-color: #d3d3d3;
-  font-family: Asap-Condensed-Regular;
-  transition: 0.3s;
+  box-shadow: 0 0 5px 2px #66fcf1;
 }
 
-.PasswordBox {
-  border-radius: 10px;
-  height: 50px;
-  width: 300px;
-  padding-left: 15px;
-  font-size: 20px;
-  margin: 10px 0px;
-  outline: none;
-  background-color: #d3d3d3;
-  font-family: Asap-Condensed-Regular;
-  transition: 0.3s;
+.ChangeButton {
+  margin-top: 15px;
 }
 
-.NameBox:hover {
-  background-color: #f5f3f4;
+.ChangeButton button {
+  font-size: 14px;
+  color: #66fcf1;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease-in-out;
 }
 
-.EmailBox:hover {
-  background-color: #f5f3f4;
-}
-
-.PasswordBox:hover {
-  background-color: #f5f3f4;
+.ChangeButton button:hover {
+  color: #45a29e;
 }

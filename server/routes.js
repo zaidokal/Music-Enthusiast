@@ -207,7 +207,7 @@ router.get("/auth/email-confirmation", (req, res) => {
 
 // Verification
 // POST request to login
-router.post("/auth/login", (req, res, next) => {
+router.post("/login", (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
     if (!user) res.send("Incorrect email or password.");
@@ -233,31 +233,57 @@ router.post("/auth/login", (req, res, next) => {
 
 // Some sort of request for JWT
 // POST request to change password
-router.post("/auth/change-password", async (req, res) => {
-  const currentPassword = req.body.currentPassword;
-  const newPassword = req.body.newPassword;
+router.post("/change-password", async (req, res) => {
+  try {
+    const { email, currentPassword, newPassword } = req.body;
 
-  await storage.getItem(req.body.email).then((user) => {
-    bcrypt.compare(currentPassword, user.password).then((match) => {
-      if (match) {
-        bcrypt.hash(newPassword, 10).then((hashedPassword) => {
-          user.password = hashedPassword;
-          storage.setItem(req.body.email, user).then(() => {
-            res.json({
-              success: true,
-              message: "Password changed successfully",
-            });
-          });
-        });
-      } else {
-        // Return an error message if the current password is incorrect
-        res.json({
-          success: false,
-          message: "Incorrect password",
-        });
-      }
+    // Validate input
+    if (!email || !currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required.",
+      });
+    }
+
+    if (currentPassword === newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: "New password cannot be the same as the current password.",
+      });
+    }
+
+    const user = await storage.getItem(email);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found.",
+      });
+    }
+
+    const match = await bcrypt.compare(currentPassword, user.password);
+    if (!match) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect current password.",
+      });
+    }
+
+    // Hash new password and update storage
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    await storage.setItem(email, user);
+    res.json({
+      success: true,
+      message: "Password changed successfully.",
     });
-  });
+  } catch (error) {
+    console.error("Error changing password:", error);
+    res.status(500).json({
+      success: false,
+      message: "An error occurred while changing the password.",
+    });
+  }
 });
 
 // POST request to logout
@@ -438,6 +464,42 @@ router.get("/open/lists/:name", async (req, res) => {
   }
 });
 
+// PUT request to rename a playlist
+router.put("/secure/lists/rename/:oldName", async (req, res) => {
+  const { newName } = req.body; // New name passed in the request body
+  const { oldName } = req.params; // Old name passed as a URL parameter
+
+  if (!newName || newName.trim() === "") {
+    return res.status(400).send("New name cannot be empty.");
+  }
+
+  try {
+    // Retrieve the existing playlist by the old name
+    let existingList = await storage.getItem(oldName);
+
+    if (!existingList) {
+      return res.status(404).send("ERROR: No existing list with this name.");
+    }
+
+    // Check if a playlist with the new name already exists
+    let newListExists = await storage.getItem(newName);
+    if (newListExists) {
+      return res
+        .status(409)
+        .send("ERROR: A playlist with the new name already exists.");
+    }
+
+    // Save the playlist with the new name and remove the old one
+    await storage.setItem(newName, existingList);
+    await storage.removeItem(oldName);
+
+    res.status(200).send("Successfully renamed the playlist.");
+  } catch (error) {
+    console.error("Error renaming playlist:", error);
+    res.status(500).send("Internal server error.");
+  }
+});
+
 // ----- Authenticated Users ----- api/secure
 
 // POST Request to create playlist
@@ -445,22 +507,22 @@ router.post(
   "/secure/lists",
   body("listName").not().isEmpty().trim().escape(),
   async (req, res) => {
-    if (req.isAuthenticated()) {
-      let existingList = await storage.getItem(req.body.listName);
-      if (existingList) {
-        res.send("ERROR: existing list with this name");
-      } else if (!existingList) {
-        storage.setItem(req.body.listName, {
-          creator: req.body.username,
-          tracks: req.body.tracks,
-          privateFlag: req.body.privateFlag,
-          type: "list",
-        });
-        res.send("Successfully added list!");
-      }
-    } else {
-      res.send("User is not logged in!");
+    // if (req.isAuthenticated()) {
+    let existingList = await storage.getItem(req.body.listName);
+    if (existingList) {
+      res.send("ERROR: existing list with this name");
+    } else if (!existingList) {
+      storage.setItem(req.body.listName, {
+        creator: req.body.username,
+        tracks: req.body.tracks,
+        privateFlag: req.body.privateFlag,
+        type: "list",
+      });
+      res.send("Successfully added list!");
     }
+    // } else {
+    //   res.send("User is not logged in!");
+    // }
   }
 );
 

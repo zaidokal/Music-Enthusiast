@@ -1,0 +1,16 @@
+{
+  "key": "Studying",
+  "value": {
+    "creator": "Music Enthusiastic",
+    "tracks": [
+      364,
+      194,
+      199,
+      401,
+      403,
+      408
+    ],
+    "privateFlag": "public",
+    "type": "list"
+  }
+}

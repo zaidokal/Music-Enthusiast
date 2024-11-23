@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import HeaderAccount from "../components/HeaderAccount";
+import Header from "../components/Header";
 import styles from "./SearchResults.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
@@ -7,7 +7,7 @@ import TrackCard from "../components/TrackCard";
 import ListCard from "../components/ListCard";
 import { useLocation } from "react-router-dom";
 import GenericButton from "../components/GenericButton";
-import {REACT_APP_IP, REACT_APP_PORT} from "../config";
+import { REACT_APP_IP, REACT_APP_PORT } from "../config";
 
 export const SearchResults = (props) => {
   const search = useLocation().search;
@@ -21,12 +21,14 @@ export const SearchResults = (props) => {
   useEffect(() => {
     axios
       .get(
-        `http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`
+        `http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/open/tracks?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`
       )
       .then((res) => {
         const tracks = res.data.map((t) =>
           axios
-            .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/tracks/${t.track_id}`)
+            .get(
+              `http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/open/tracks/${t.track_id}`
+            )
             .then((res) => {
               res.data[0].track_id = t.track_id;
               return res.data[0];
@@ -41,9 +43,11 @@ export const SearchResults = (props) => {
         );
       });
 
-    axios.get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/lists`).then((res) => {
-      setPlayList(res.data);
-    });
+    axios
+      .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/open/lists`)
+      .then((res) => {
+        setPlayList(res.data);
+      });
   }, []);
 
   const trackPropList = trackList.map((track) => (
@@ -56,7 +60,7 @@ export const SearchResults = (props) => {
 
   return (
     <>
-      <HeaderAccount />
+      <Header />
       <BackgroundOpacity />
 
       <div className={styles.MainDiv}>

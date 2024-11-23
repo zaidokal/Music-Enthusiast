@@ -1,61 +1,73 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import GenericButton from "../components/GenericButton";
 import Header from "../components/Header";
 import styles from "./SearchPage.module.css";
 
-export const SearchPage = (props) => {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
+const InputField = ({ label, name, placeholder, value, onChange }) => (
+  <div className={styles.InputContainer}>
+    <label htmlFor={name} className={styles.Label}>
+      {label}
+    </label>
+    <input
+      id={name}
+      className={styles.TextBox}
+      type="text"
+      name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={onChange}
+      aria-label={placeholder}
+    />
+  </div>
+);
 
+export const SearchPage = () => {
   const [trackNameInput, setTrackNameInput] = useState("");
   const [artistInput, setArtistInput] = useState("");
   const [genreInput, setGenreInput] = useState("");
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    console.log(trackNameInput);
-    console.log(artistInput);
-    console.log(genreInput);
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate(
+      `/SearchResults?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`
+    );
   };
 
   return (
     <>
       <Header />
       <BackgroundOpacity />
-
       <div className={styles.MainDiv}>
-        <form onSubmit={handleSubmit}>
-          <label>Find your next favourite song!</label>
-
-          <input
-            className={styles.TextBox}
-            type="string"
-            placeholder="Track Name"
+        <h1 className={styles.Title}>Find Your Next Favourite Song!</h1>
+        <form className={styles.Form}>
+          <InputField
+            label="Track Name"
+            name="trackNameInput"
+            placeholder="Enter track name"
             value={trackNameInput}
             onChange={(e) => setTrackNameInput(e.target.value)}
-          ></input>
-
-          <input
-            className={styles.TextBox}
-            type="string"
-            placeholder="Artist"
+          />
+          <InputField
+            label="Artist"
+            name="artistInput"
+            placeholder="Enter artist name"
             value={artistInput}
             onChange={(e) => setArtistInput(e.target.value)}
-          ></input>
-
-          <input
-            className={styles.TextBox}
-            type="string"
-            placeholder="Genre"
+          />
+          <InputField
+            label="Genre"
+            name="genreInput"
+            placeholder="Enter genre"
             value={genreInput}
             onChange={(e) => setGenreInput(e.target.value)}
-          ></input>
-
+          />
           <GenericButton
-            text={"Submit"}
-            linkTo={`/SearchResults?trackTitle=${trackNameInput}&artist=${artistInput}&genreName=${genreInput}`}
+            text="Search"
             onClick={handleClick}
+            className={styles.SubmitButton}
           />
         </form>
       </div>

@@ -6,22 +6,22 @@ const artists = [];
 const tracks = [];
 
 const parse = function () {
-  fs.createReadStream("../lab3-data/genres.csv")
+  fs.createReadStream("../data/genres.csv")
     .pipe(csv({}))
     .on("data", (data) => genres.push(data))
     .on("end", () => console.log("Genres"));
 
-  fs.createReadStream("../lab3-data/raw_albums.csv")
+  fs.createReadStream("../data/raw_albums.csv")
     .pipe(csv({}))
     .on("data", (data) => albums.push(data))
     .on("end", () => console.log("Albums"));
 
-  fs.createReadStream("../lab3-data/raw_artists.csv")
+  fs.createReadStream("../data/raw_artists.csv")
     .pipe(csv({}))
     .on("data", (data) => artists.push(data))
     .on("end", () => console.log("Artists"));
 
-  fs.createReadStream("../lab3-data/raw_tracks.csv")
+  fs.createReadStream("../data/raw_tracks.csv")
     .pipe(csv({}))
     .on("data", (data) => tracks.push(data))
     .on("end", () => console.log("Tracks"));

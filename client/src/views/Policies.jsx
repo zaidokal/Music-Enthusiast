@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
-import HeaderAccount from "../components/HeaderAccount";
+import Header from "../components/Header";
 import styles from "./Policies.module.css";
 import BackgroundOpacity from "../components/BackgroundOpacity";
 import axios from "axios";
-import {REACT_APP_IP, REACT_APP_PORT} from "../config";
+import { REACT_APP_IP, REACT_APP_PORT } from "../config";
 
 export const Policies = () => {
   const [policies, setPolicies] = useState({});
 
   useEffect(() => {
-    axios.get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/open/policies`).then((res) => {
-      setPolicies(res.data);
-    });
+    axios
+      .get(`http://${REACT_APP_IP}:${REACT_APP_PORT}/api/auth/open/policies`)
+      .then((res) => {
+        setPolicies(res.data);
+      });
   }, []);
 
   let privacy = policies[0] && policies[0]["privacy"];
@@ -20,7 +22,7 @@ export const Policies = () => {
 
   return (
     <>
-      <HeaderAccount />
+      <Header />
       {/* <BackgroundOpacity /> */}
 
       <div className={styles.PrivacyDetails}>
